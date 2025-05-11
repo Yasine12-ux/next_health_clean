@@ -41,7 +41,7 @@ pipeline {
 
         stage('Pusher les images vers Docker Hub') {
             steps {
-                withDockerRegistry([credentialsId: 'dockerhub-creds']) {
+                withDockerRegistry([credentialsId: 'dockerhub-creds' , url: 'https://index.docker.io/v1/']) {
                     script {
                         def images = ['frontend', 'api-gateway-auth', 'appointments', 'discovery', 'config-server', 'medical-record']
                         images.each { img ->
