@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/api-gateway-auth/api-gateway-auth.iml" filepath="$PROJECT_DIR$/api-gateway-auth/api-gateway-auth.iml" />
+      <module fileurl="file://$PROJECT_DIR$/front.iml" filepath="$PROJECT_DIR$/front.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/healthcare-pfe.iml" filepath="$PROJECT_DIR$/.idea/healthcare-pfe.iml" />
+    </modules>
+  </component>
+</project>

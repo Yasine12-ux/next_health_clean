@@ -1,0 +1,58 @@
+<div class=" border-b border-gray-200 dark:border-gray-700">
+  <ul *ngIf="router.url.includes('/rh/appointments/')" class="ms-10 flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400">
+    <li class="me-2">
+      <a routerLink="/home/rh/rh/appointments/list" routerLinkActive='bg-gray-50 border-blue-500 font-bold text-blue-600 border-b-2 border-blue-600' class="inline-flex items-center justify-center p-4 text-blue-600  rounded-t-lg active dark:text-blue-500 dark:border-blue-500 group" aria-current="page">
+        <svg class="w-4 h-4 me-2  " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
+          <path d="M3 4.5h10a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2m0 1a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1zM1 2a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 2m0 12a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 14"/>
+        </svg>Vue Tableau
+      </a>
+    </li>
+    <li class="me-2">
+      <a routerLink="/home/rh/rh/appointments/calendar" routerLinkActive='bg-gray-50 border-blue-500 font-bold text-blue-600 border-b-2 border-blue-600' class="inline-flex items-center justify-center p-4 text-blue-600  rounded-t-lg active group" aria-current="page">
+        <svg class="w-4 h-4 me-2 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
+          <path d="M9 7a1 1 0 0 1 1-1h5v2h-5a1 1 0 0 1-1-1M1 9h4a1 1 0 0 1 0 2H1z"/>
+          <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/>
+        </svg>Calendrier
+      </a>
+    </li>
+
+  </ul>
+  <ul *ngIf="router.url.includes('/inf/appointments/')" class="ms-10 flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400">
+    <li class="me-2">
+      <a routerLink="/home/inf/inf/appointments/list" routerLinkActive='bg-gray-50 border-blue-500 font-bold text-blue-600 border-b-2 border-blue-600' class="inline-flex items-center justify-center p-4 text-blue-600  rounded-t-lg active dark:text-blue-500 dark:border-blue-500 group" aria-current="page">
+        <svg class="w-4 h-4 me-2  " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
+          <path d="M3 4.5h10a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2m0 1a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1zM1 2a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 2m0 12a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 14"/>
+        </svg>Vue Tableau
+      </a>
+    </li>
+    <li class="me-2">
+      <a routerLink="/home/inf/inf/appointments/calendar" routerLinkActive='bg-gray-50 border-blue-500 font-bold text-blue-600 border-b-2 border-blue-600' class="inline-flex items-center justify-center p-4 text-blue-600  rounded-t-lg active group" aria-current="page">
+        <svg class="w-4 h-4 me-2 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
+          <path d="M9 7a1 1 0 0 1 1-1h5v2h-5a1 1 0 0 1-1-1M1 9h4a1 1 0 0 1 0 2H1z"/>
+          <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/>
+        </svg>Calendrier
+      </a>
+    </li>
+
+  </ul>
+
+  <ul *ngIf="router.url.includes('/manager-line/appointments/')" class="ms-10 flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400">
+    <li class="me-2">
+      <a routerLink="/home/ml/manager-line/appointments/list" routerLinkActive='bg-gray-50 border-blue-500 font-bold text-blue-600 border-b-2 border-blue-600' class="inline-flex items-center justify-center p-4 text-blue-600  rounded-t-lg active dark:text-blue-500 dark:border-blue-500 group" aria-current="page">
+        <svg class="w-4 h-4 me-2  " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
+          <path d="M3 4.5h10a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2m0 1a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1zM1 2a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 2m0 12a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 14"/>
+        </svg>Vue Tableau
+      </a>
+    </li>
+  </ul>
+
+  <ul *ngIf="router.url.includes('/manager-segment/appointments/')" class="ms-10 flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400">
+    <li class="me-2">
+      <a routerLink="/home/ms/manager-segment/appointments/list" routerLinkActive='bg-gray-50 border-blue-500 font-bold text-blue-600 border-b-2 border-blue-600' class="inline-flex items-center justify-center p-4 text-blue-600  rounded-t-lg active dark:text-blue-500 dark:border-blue-500 group" aria-current="page">
+        <svg class="w-4 h-4 me-2  " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
+          <path d="M3 4.5h10a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2m0 1a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1zM1 2a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 2m0 12a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 14"/>
+        </svg>Tableau
+      </a>
+    </li>
+  </ul>
+</div>

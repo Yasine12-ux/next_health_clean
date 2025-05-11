@@ -1,0 +1,16 @@
+<div class="border-2 w-[500px] p-5 mt-10">
+  <div class="mb-4">
+    <p class="text-xl font-bold text-blue-700 text-center mb-3">Courrier</p>
+    <label for="destinataire" class="block text-gray-700 font-bold mb-2">Destinataire:</label>
+    <input id="destinataire" [(ngModel)]="destinataire" class="w-full border rounded-lg p-2" type="text">
+  </div>
+  <div class="mb-4">
+    <label for="Description" class="block text-gray-700 font-bold mb-2">Description:</label>
+
+    <textarea id="Description" [(ngModel)]="ordonnance" class="w-full h-32 border rounded-lg p-2"></textarea>
+  </div>
+
+
+
+  <button (click)="generatePDF()" class="my-4 p-2 bg-blue-500 text-white rounded">Imprimer</button>
+</div>

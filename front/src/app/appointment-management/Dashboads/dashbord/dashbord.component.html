@@ -1,0 +1,118 @@
+<div class="container mx-auto p-4 ">
+
+
+
+  <div class="grid grid-cols-1 {{router.url.includes('doctor')?'md:grid-cols-4':'md:grid-cols-2'}} gap-4 mb-4 ">
+    <div class=" shadow rounded-lg p-4 flex flex-col bg-gray-100">
+      <div class="flex justify-between">
+        <h2 class="text-l font-semibold text-gray-600">Total des rendez-vous</h2>
+      </div>
+      <div class="place-items-center  grid grid-cols-5 w-full h-24">
+        <p class="h-fit text-center text-5xl col-span-2 font-bold text-gray-900">{{ totalAppoitement }}</p>
+        <div  id="area-chart" class=" ms-2  col-span-3"></div>
+      </div>
+      <p class="text-xs  "> <span class="{{totalAppointmentsChange?.includes('+')?'text-sm text-green-500':'text-sm text-red-500'}}">
+        {{ totalAppointmentsChange }} <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="{{totalAppointmentsChange?.includes('+')?'w-6 h-6 inline-block':'w-6 h-6 inline-block rotate-90'}} ">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941" />
+</svg> </span> par rapport à la semaine dernière</p>
+
+    </div>
+
+
+    <app-pie-charts *ngIf="router.url.includes('doctor')"></app-pie-charts>
+    <app-femme-pie-chart *ngIf="router.url.includes('doctor')"></app-femme-pie-chart>
+    <div class=" shadow rounded-lg p-4 flex flex-col bg-gray-100  ">
+      <div class="flex justify-between ">
+        <h2 class="text-l font-semibold text-gray-600">Total des patients</h2>
+      </div>
+      <div class="place-items-center grid grid-cols-5 w-full h-24">
+        <div class="col-span-4 flex justify-between items-center mt-10 w-full">
+          <p class="text-5xl md:text-7xl font-bold text-gray-900">{{ totalPatient }}</p>
+<!--          <i class="text-black-500">-->
+<!--            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">-->
+<!--              <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />-->
+<!--            </svg>-->
+<!--          </i>-->
+        </div>
+      </div>
+
+
+
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 {{router.url.includes('doctor')?'md:grid-cols-4':'md:grid-cols-3'}} gap-4 w-full">
+
+
+    <div *ngIf="userManage()" class="relative col-span-2 bg-white shadow rounded-lg p-4">
+      <h2 class="inline-block text-lg font-semibold text-gray-800 mb-4">Rendez-vous</h2>
+      <a  routerLink="../appointments/list" class="bg-blue-500   w-[100px] rounded-2xl p-2 absolute inline-block right-5 justify-center items-center"><span class="ml-1 text-white">voir plus</span> </a>
+
+      <div class="overflow-x-auto">
+        <table class="min-w-full bg-white divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+          <tr>
+            <th class="py-2 px-4 border-b border-gray-200">Nom du patient</th>
+            <th class="py-2 px-4 border-b border-gray-200 hidden md:table-cell">Créé par</th>
+            <th class="py-2 px-4 border-b border-gray-200">Statut</th>
+            <th class="py-2 px-4 border-b border-gray-200">Date</th>
+          </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+          <tr *ngFor="let appointment of appoitmentData">
+            <td class="py-2 px-4 border-b border-gray-200">{{ appointment.patientName }}</td>
+            <td class="py-2 px-4 border-b border-gray-200 hidden md:table-cell">{{ appointment.createdBy }}</td>
+            <td class="py-2 px-4 border-b border-gray-200">
+            <span [ngClass]="{
+              'bg-green-200 text-green-800': appointment.status === 'SCHEDULED',
+              'bg-red-200 text-red-800': appointment.status === 'CANCELLED'
+            }" class="px-2 py-1 rounded-full text-xs font-semibold">
+               {{ statusTranslate(appointment.status) }}
+            </span>
+            </td>
+            <td class="py-2 px-4 border-b border-gray-200">{{ appointment.startTime | date: 'MMM d, y, h:mm a' }}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+<app-line-chart class="ms-2 overflow-hidden {{router.url.includes('doctor')?'col-span-2':'col-span-2'}} " *ngIf="pTest"></app-line-chart>
+    <app-radial-chart *ngIf="router.url.includes('doctor')"></app-radial-chart>
+    <div class="max-w-sm w-full  bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
+      <div class="flex justify-between mb-3">
+        <div class="flex items-center">
+          <div class="flex justify-center items-center">
+            <h5 class="text-md font-bold leading-none text-gray-900 dark:text-white pe-1">Avancement des rendez-vous</h5>
+          </div>
+        </div>
+      </div>
+
+      <div class=" dark:bg-gray-700 p-3 rounded-lg  ">
+
+        <div class="grid grid-cols-3 gap-3 mb-2 ">
+          <dl class="bg-green-200 dark:bg-gray-600 rounded-lg flex flex-col items-center justify-center h-[78px]">
+            <dt class="w-8 h-8 rounded-full bg-green-100 dark:bg-gray-500 text-blue-600 dark:text-blue-300 text-sm font-medium flex items-center justify-center mb-1">{{this.totalRDVRealise}}</dt>
+            <dd class="text-blue-600  text-xs font-medium">Completé</dd>
+          </dl>
+          <dl class="bg-orange-200 dark:bg-gray-600 rounded-lg flex flex-col items-center justify-center h-[78px]">
+            <dt class="w-8 h-8 rounded-full bg-orange-100 dark:bg-gray-500 text-orange-600 dark:text-orange-300 text-sm font-medium flex items-center justify-center mb-1">{{this.totalRDVPlanifie}}</dt>
+            <dd class="text-orange-600  text-xs font-medium">Planifié</dd>
+          </dl>
+          <dl class="bg-red-200 dark:bg-gray-600 rounded-lg flex flex-col items-center justify-center h-[78px]">
+            <dt class="w-8 h-8 rounded-full bg-red-100 dark:bg-gray-500 text-teal-600 dark:text-teal-300 text-sm font-medium flex items-center justify-center mb-1">{{this.totalRDVAnnule}}</dt>
+            <dd class="text-teal-600 dark:text-teal-300 text-xs font-medium">Annulé</dd>
+          </dl>
+
+        </div>
+
+      </div>
+
+
+      <!-- Radial Chart -->
+      <div class=" " id="radial-chart"></div>
+    </div>
+
+
+  </div>
+</div>

@@ -1,0 +1,31 @@
+<section class="">
+    <img src="assets/peakpx2.jpg" class="absolute z-[-5] object-fill h-full w-full ">
+    <div class="flex flex-col z-50 items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+        <div class="border-2 bg-opacity-65  border-gray-300 w-full p-6 bg-white rounded-lg shadow md:mt-0 sm:max-w-md sm:p-8">
+            <h2 class="mb-1 text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
+                Mot de passe oublié
+            </h2>
+            <form class=" mt-4 space-y-4 lg:mt-5 md:space-y-5" [formGroup]="ForgotPasswordForm" (ngSubmit)="submited()" >
+                <div>
+                    <label for="email" class="block mb-2 text-sm font-bold text-gray-900">Votre email</label>
+                    <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-400 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="nom@entreprise.com" formControlName="email" required [attr.disabled]="!hided">
+                </div>
+                <div *ngIf="hided">
+                    <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Code</label>
+                    <input type="text" name="password" id="password" placeholder="entrer le code" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" formControlName="code">
+                </div>
+                <div *ngIf="hided" class="flex items-center space-x-2">
+                    <span *ngIf="!timerExpired" class="text-red-600 font-bold text-sm">
+                        {{ formatTime(countdownSeconds) }} restant
+                    </span>
+                    <button class="{{ timecheck() ? 'text-blue-600 underline hover:text-blue-800'
+                    : 'text-gray-400' }}" (click)="resend()" [disabled]="!timecheck()">Renvoyer</button>
+                </div>
+                <div class="flex justify-end">
+                    <button routerLink="/login" (click)="cancel()" class="w-[20%] m-2 text-black font-bold bg-white hover:bg-gray-400 focus:ring-4 focus:outline-none focus:ring-primary-300  rounded-lg text-sm py-1 text-center">Annuler</button>
+                    <button class="w-[35%] m-2 text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm  py-1 text-center">{{hided?'Réinitialiser ':'Obtenir le code'}}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,5 @@
+<input type="file" (change)="onFileSelected($event)" />
+<button (click)="getFile(1)">Get File</button> <!-- Replace 2 with the actual ID of the file -->
+<object *ngIf="fileUrl && fileType === 'application/pdf'" [data]="fileUrl" type="application/pdf"  class="w-full h-[500px]"></object>
+<img *ngIf="fileUrl && fileType.startsWith('image/')" [src]="fileUrl" alt="Preview"  class="w-[50px] h-[50px]"/>
+<button *ngIf="fileUrl" (click)="downloadFile()">Download</button>

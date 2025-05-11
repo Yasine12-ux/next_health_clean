@@ -1,0 +1,120 @@
+<div class= " shadow-md sm:rounded-lg  p-6">
+  <div class="flex  flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between pb-4">
+    <label for="table-search" class="sr-only">Recherche</label>
+    <div class="relative">
+      <div class="absolute inset-y-0 left-0 rtl:inset-r-0 rtl:right-0 flex items-center ps-3 pointer-events-none">
+        <svg class="w-5 h-5 text-gray-500" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+      </div>
+      <input
+        [formControl]="searchFormControl"
+        type="text" id="table-search" class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Recherche patient">
+    </div>
+
+    </div>
+
+
+  <table cdk-table [dataSource]="dataOnPage$" class="w-full text-sm text-left rtl:text-right text-gray-500 ">
+    <!-- Header and Row Declarations -->
+    <tr  cdk-header-row *cdkHeaderRowDef="displayedColumns$.value" class="text-xs text-gray-700 capitalize bg-gray-50"></tr>
+    <tr cdk-row *cdkRowDef="let row; columns: displayedColumns$.value" class="bg-white border-b hover:bg-gray-50"></tr>
+
+    <!-- Hero Name Column -->
+    <ng-container cdkColumnDef="nom">
+      <th class="px-6 py-3" cdk-header-cell *cdkHeaderCellDef (click)="adjustSort('nom')">
+        nom <span *ngIf="sortKey$.value === 'nom'">{{ sortDirection$.value === 'asc' ? '⬆️' : '⬇️' }}</span>
+      </th>
+      <td class="w-4 p-2" cdk-cell *cdkCellDef="let row">
+      <span class="flex items-center me-3">
+          {{row.nom}}
+    </span>
+      </td>
+    </ng-container>
+
+    <!-- Hero Types Column -->
+    <ng-container cdkColumnDef="prenom">
+      <th class="px-6 py-3" cdk-header-cell *cdkHeaderCellDef (click)="adjustSort('prenom')">
+        prénom <span *ngIf="sortKey$.value === 'prenom'">{{ sortDirection$.value === 'asc' ? '⬆️' : '⬇️' }}</span>
+      </th>
+      <td class="w-4 p-2" cdk-cell *cdkCellDef="let row"> {{row.prenom}} </td>
+    </ng-container>
+
+    <!-- Hero Attack Column -->
+    <ng-container cdkColumnDef="cin">
+      <th class="px-6 py-3" cdk-header-cell *cdkHeaderCellDef (click)="adjustSort('cin')">
+        cin <span *ngIf="sortKey$.value === 'cin'">{{ sortDirection$.value === 'asc' ? '⬆️' : '⬇️' }}</span>
+      </th>
+      <td class="w-4 p-2" cdk-cell
+          *cdkCellDef="let row">
+        {{row.cin}}
+      </td>
+    </ng-container>
+    <ng-container cdkColumnDef="dateNaissance">
+      <th class="px-6 py-3" cdk-header-cell *cdkHeaderCellDef (click)="adjustSort('dateNaissance')">
+        date de Naissance <span *ngIf="sortKey$.value === 'dateNaissance'">{{ sortDirection$.value === 'asc' ? '⬆️' : '⬇️' }}</span>
+      </th>
+      <td class="w-4 p-2" cdk-cell
+          *cdkCellDef="let row">
+        {{row.dateNaissance ? row.dateNaissance.split("T").join("  ").split(".")[0] : ''}}
+      </td>
+    </ng-container>
+    <ng-container cdkColumnDef="sexe">
+      <th class="px-6 py-3" cdk-header-cell *cdkHeaderCellDef (click)="adjustSort('sexe')">
+        Sexe <span *ngIf="sortKey$.value === 'sexe'">{{ sortDirection$.value === 'asc' ? '⬆️' : '⬇️' }}</span>
+      </th>
+      <td class="w-4 p-2" cdk-cell
+          *cdkCellDef="let row">
+        {{row.sexe}}
+      </td>
+    </ng-container>
+
+    <!-- Level Up Column -->
+    <ng-container cdkColumnDef="Action">
+      <th class="px-6 py-3 text-center" cdk-header-cell *cdkHeaderCellDef>
+        Action
+      </th>
+      <td class="w-6 p-2 text-center" cdk-cell *cdkCellDef="let row">
+            <a (click)="fiche(row.userId,row.nom,row.prenom)" class="font-medium text-blue-600  hover:underline">Edit</a>
+
+      </td>
+    </ng-container>
+
+
+
+  </table>
+
+  <div class="flex flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between pb-4">
+    <div>
+      <button id="dropdownRadioButtonUsers" data-dropdown-toggle="dropdownRadioUsers" class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5" type="button">
+        {{pageSize$.value}} patient par page
+        <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+        </svg>
+      </button>
+      <!-- Dropdown menu -->
+      <div id="dropdownRadioUsers" class="z-10 hidden w-48 bg-white divide-y divide-gray-100 rounded-lg shadow" data-popper-reference-hidden="" data-popper-escaped="" data-popper-placement="top" style="position: absolute; inset: auto auto 0px 0px; margin: 0px; transform: translate3d(522.5px, 3847.5px, 0px);">
+        <ul class="p-3 space-y-1 text-sm text-gray-700" aria-labelledby="dropdownRadioButton">
+          <li *ngFor="let i of [5,10,20]">
+            <div class="flex items-center p-2 rounded hover:bg-gray-100" (click)="handleClick(i)">
+              <input  id="filter-radio-user-{{i}}" type="radio" value="" name="filter-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+              <label for="filter-radio-user-{{i}}" class="w-full ms-2 text-sm font-medium text-gray-900 rounded">{{i}} patients par page</label>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <label for="table-search" class="sr-only">Recherche</label>
+    <div class="relative">
+      <div class="float-right">
+        <app-pagination
+          [collectionSize]="dataSize"
+          [pageSize]=pageSize$.value
+          (pageChange)="changeCurrentPage($event)"
+          [currentPage]=currentPage$.value
+        >
+        </app-pagination>
+      </div>
+    </div>
+  </div>
+
+
+</div>

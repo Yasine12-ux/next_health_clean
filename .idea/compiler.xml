@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="config-server" />
+        <module name="medical-record" />
+        <module name="api-gateway-auth" />
+        <module name="appointments" />
+        <module name="appointments (1)" />
+        <module name="discovery" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="gateway" target="17" />
+      <module name="structure" target="17" />
+      <module name="User" target="17" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="User" options="-parameters" />
+      <module name="api-gateway-auth" options="-parameters" />
+      <module name="appointments" options="-parameters" />
+      <module name="appointments (1)" options="-parameters" />
+      <module name="auth" options="-parameters" />
+      <module name="config-server" options="-parameters" />
+      <module name="discovery" options="-parameters" />
+      <module name="gateway" options="-parameters" />
+      <module name="medical-record" options="-parameters" />
+    </option>
+  </component>
+</project>

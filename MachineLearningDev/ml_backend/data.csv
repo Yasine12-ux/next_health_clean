@@ -1,0 +1,11 @@
+tailleCm,poidsKg,groupeSanguin,IMC,age,sexe,HTA,diabete,dyslipidemie,autresAntecedentsFamiliaux,nbGrossesse,nbEnfantsVivants,nbMacrosomies,nbAvortements,nbMortNes,contraceptionUtilisee,ageMenopause,autresAntecedentsGynecoObstetriques,alcoolSemaine,tabacStatus,nbCigaretteParJour,drogue,autreHabitudeToxique,diagnostic,prescription,clean_autresAntecedentsFamiliaux,clean_autresAntecedentsGynecoObstetriques,clean_autreHabitudeToxique,clean_diagnostic,userId,nom,prenom,dateNaissance,lieuNaissance,cin,numTel,adresse,exFumerDate
+165,65,B+,23.88,35,F,no,yes,yes,diabetes,1,1,0,0,0,iud,0,pcos,1,former,0,no,none,hypertension,lisinopril,diabetes,pcos,none,hypertension,,,,,,,,,
+175,80,AB-,26.12,50,M,yes,no,no,hypertension,0,0,0,0,0,none,0,none,3,never,0,no,none,healthy,none,hypertension,none,none,healthy,,,,,,,,,
+166,88,A_NEGATIF,31.934969,23,Homme,True,False,False,test,0,0,0,0,0,,0,,1,NON_FUMEUR,0,True,string,Aziz Sleep,wake up,test,,string,aziz sleep,79.0,Dridi ,Tarek,2001-03-19,string,14011590,21233321,Sit ipsa ullamco q,
+0,0,,0.0,0,,False,False,False,,0,0,0,0,0,,0,,0,,0,False,,Diabet  Diabète de type 1 avec hyperglycémie persistante et perte de poids.,"Insuline, régime alimentaire contrôlé, suivi glycémique.",,,,diabet diabète de type 1 avec hyperglycémie persistante et perte de poids,80.0,Tahar,Romdhane,,,,,,
+0,0,,0.0,0,,False,False,False,,0,0,0,0,0,,0,,0,,0,False,,diabet Diabète de type 2 avec neuropathie diabétique et ulcères du pied.,"Metformine, soins des pieds, contrôle glycémique.",,,,diabet diabète de type 2 avec neuropathie diabétique et ulcères du pied,57.0,Bilel,Bouzid,,,,,,
+0,0,,0.0,0,,False,False,False,,0,0,0,0,0,,0,,0,,0,False,,Diabète  Diabète gestationnel avec intolérance au glucose.,"Régime alimentaire, exercice modéré, surveillance glycémique.",,,,diabète diabète gestationnel avec intolérance au glucose,67.0,Zouhair,Khadhar,,,,,,
+0,0,,0.0,0,,False,False,False,,0,0,0,0,0,,0,,0,,0,False,,Hypertension Hypertension essentielle avec céphalées fréquentes.,"Antihypertenseurs, régime pauvre en sel, exercice.",,,,hypertension hypertension essentielle avec céphalées fréquentes,68.0,Nizar,Mabrouk,,,,,,
+0,0,,0.0,0,,False,False,False,,0,0,0,0,0,,0,,0,,0,False,,pain pain,"Antihypertenseurs, régime pauvre en sel, exercice.
+
+",,,,pain pain,78.0,Mahdi,Masri,,,,,,

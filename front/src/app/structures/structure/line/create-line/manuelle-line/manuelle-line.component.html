@@ -1,0 +1,28 @@
+
+<p class="text-sm mt-3 text-gray-500">1-Ajout un seul line.</p>
+
+<form class="mx-2" [formGroup]="formLine" (ngSubmit)="createLines()" ngNativeValidate>
+  <div class="relative z-0 w-full my-3 group">
+    <select #plantDropdown formControlName="plant" id="plant" name="plant" required class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+      <option value="" selected disabled hidden>plant</option>
+      <option *ngFor="let plant of plantName" [value]="plant.id">{{plant.name}}</option>
+    </select>
+  </div>
+  <div  class="relative z-0 w-full my-3 group" *ngIf="formLine.value?.plant">
+    <select #plantDropdown1 formControlName="productSection" id="productSection" name="productSection" required class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+      <option value="" selected disabled hidden>product section</option>
+      <option *ngFor="let productSection of productSectionName" [value]="productSection.productSectionId">{{productSection.name}}</option>
+    </select>
+  </div>
+  <div  class="relative z-0 w-full my-3 group" *ngIf="formLine.value?.productSection">
+    <select #plantDropdown2 formControlName="segment" id="Segment" name="Segment" required class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+      <option value="" selected disabled hidden>Segment</option>
+      <option *ngFor="let Segment of SegmentName" [value]="Segment.segmentName">{{Segment.segmentName}}</option>
+    </select>
+  </div>
+  <div class="relative z-0 w-full my-3 group" *ngIf="formLine.value.segment ">
+    <input type="text" id="line" name="line" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " formControlName="line" required/>
+    <label for="line" class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Line</label>
+  </div>
+  <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5">Save</button>
+</form>

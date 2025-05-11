@@ -1,0 +1,38 @@
+<div class="w-fit h-full">
+  <div class="w-full ms-2 bg-white p-2 rounded-lg shadow flex-1 items-center h-full">
+    <div class="w-fit m-auto " id="datepickerId" (click)="getDate()"  inline-datepicker data-date="02/25/2022"></div>
+
+  <div class="w-full mt-6 relative overflow-x-auto">
+    <div class="flex justify-between px-2">
+      <p class="text-l font-semibold leading-6 text-gray-900">List de rdv</p>
+      <button routerLink="/home/inf/inf/appointments/list" class="text-sm font-semibold leading-6 text-blue-600 hover:text-blue-700 focus:outline-none focus:underline">Voir tout</button>
+
+    </div>
+    <!--    ///////////-->
+    <ul role="list" class="divide-y divide-gray-100 mt-2">
+      <li *ngFor="let rdv of rdvList" class="flex items-center gap-x-6 py-2">
+        <div class="min-w-0 w-full">
+          <div class="flex items-start gap-x-3 px-2 justify-between">
+            <p class="text-sm font-semibold leading-6 text-gray-900">{{rdv.patientName}}</p>
+            <p class="rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset {{colorByStatus[rdv.status]}}">{{AppointmentStatusInFr[rdv.status]}}</p>
+          </div>
+          <div class="mt-1 flex items-center gap-x-2 text-xs leading-5 text-gray-500 px-2">
+            <p class="whitespace-nowrap"><time datetime="2023-03-17T00:00Z">{{rdv.startTime.split("T")[1]}}</time></p>
+            <svg viewBox="0 0 2 2" class="h-0.5 w-0.5 fill-current">
+              <circle cx="1" cy="1" r="1" />
+            </svg>
+            <p class="truncate">creé par {{rdv.createdBy}}</p>
+          </div>
+        </div>
+
+      </li>
+
+    </ul>
+
+
+
+    <!--    ////////////////////-->
+  </div>
+
+  </div>
+</div>

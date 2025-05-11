@@ -1,0 +1,46 @@
+<div class="border-2 w-[500px] p-5 mt-10 mx-auto">
+  <div class="mb-6">
+    <p class="text-2xl font-bold text-center">DEMANDE D'EXAMEN</p>
+  </div>
+
+  <div class="mb-4">
+    <label for="phone" class="block text-gray-700 font-bold mb-2">Tél. prof.:</label>
+    <input id="phone" [(ngModel)]="phone" class="w-full border rounded-lg p-2" type="text">
+  </div>
+
+  <div class="mb-4">
+    <label for="treatmentReason" class="block text-gray-700 font-bold mb-2">Région à examiner:</label>
+    <textarea id="treatmentReason" [(ngModel)]="treatmentReason" class="w-full border rounded-lg p-2" type="text"></textarea>
+  </div>
+
+  <div class="mb-4">
+    <p class="block text-gray-700 font-bold mb-2">Examen</p>
+    <div class="flex flex-wrap">
+      <label class="w-full mb-2">
+        <input type="radio" [(ngModel)]="selectedRegion" value="Radiographie(s)" class="mr-2" (change)="showOtherInput = false" checked>  Radiographie(s)
+      </label>
+      <label class="w-full mb-2">
+        <input type="radio" [(ngModel)]="selectedRegion" value="Echographie" class="mr-2" (change)="showOtherInput = false"> Echographie
+      </label>
+      <label class="w-full mb-2">
+        <input type="radio" [(ngModel)]="selectedRegion" value="IRM" class="mr-2" (change)="showOtherInput = false"> IRM
+      </label>
+      <label class="w-full mb-2">
+        <input type="radio" [(ngModel)]="selectedRegion" value="Scanner" class="mr-2" (change)="showOtherInput = false"> Scanner
+      </label>
+      <label class="w-full mb-2">
+        <input type="radio" [(ngModel)]="selectedRegion" value="Mammographie" class="mr-2" (change)="showOtherInput = false"> Mammographie
+      </label>
+      <label class="w-full mb-2">
+        <input type="radio" [(ngModel)]="selectedRegion" value="" class="mr-2" (change)="showOtherInput = true"> Autre
+      </label>
+    </div>
+  </div>
+
+  <div *ngIf="showOtherInput" class="mb-4">
+    <label for="otherRegion" class="block text-gray-700 font-bold mb-2">Autre Examen:</label>
+    <input id="otherRegion" [(ngModel)]="selectedRegion" class="w-full border rounded-lg p-2" type="text">
+  </div>
+
+  <button (click)="generatePDF()" class="w-full p-2 bg-blue-500 text-white rounded">Imprimer</button>
+</div>

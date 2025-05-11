@@ -1,0 +1,93 @@
+version: '3.8'
+services:
+  discovery-server:
+    image: discovery-server
+    build:
+      context: .
+      dockerfile: ./discovery/Dockerfile
+    ports:
+      - "8761:8761"
+    entrypoint: ["java", "-jar", "/eureka-server.jar"]
+    networks:
+      - mynetwork
+
+  gateway-app:
+    image: gateway-app
+    build:
+      context: .
+      dockerfile: ./api-gateway-auth/Dockerfile
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://pfe-postgres:5432/nexthealth_db
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: admin
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-server:8761/eureka/
+      EUREKA_INSTANCE_HOSTNAME: gateway-app
+      EUREKA_CLIENT_REGISTER_WITH_EUREKA: 'true'
+      EUREKA_CLIENT_FETCH_REGISTRY: 'true'
+    ports:
+      - "8080:8080"
+    depends_on:
+      - discovery-server
+      - pfe-postgres
+    entrypoint: ["java", "-jar", "/app.jar"]
+    networks:
+      - mynetwork
+
+  medical-record:
+    image: medical-record
+    build:
+      context: .
+      dockerfile: ./medical-record/Dockerfile
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://pfe-postgres:5432/nexthealth_db
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: admin
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-server:8761/eureka/
+      EUREKA_INSTANCE_HOSTNAME: medical-record
+      EUREKA_CLIENT_REGISTER_WITH_EUREKA: 'true'
+      EUREKA_CLIENT_FETCH_REGISTRY: 'true'
+    ports:
+      - "8060:8060"
+    depends_on:
+      - discovery-server
+      - pfe-postgres
+    entrypoint: ["java", "-jar", "/mr.jar"]
+    networks:
+      - mynetwork
+
+  appointments:
+    image: appointments
+    build:
+      context: .
+      dockerfile: ./appointments/Dockerfile
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://pfe-postgres:5432/nexthealth_db
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: admin
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-server:8761/eureka/
+      EUREKA_INSTANCE_HOSTNAME: appointments
+      EUREKA_CLIENT_REGISTER_WITH_EUREKA: 'true'
+      EUREKA_CLIENT_FETCH_REGISTRY: 'true'
+    ports:
+      - "8070:8070"
+    depends_on:
+      - discovery-server
+      - pfe-postgres
+    entrypoint: ["java", "-jar", "/rdv.jar"]
+    networks:
+      - mynetwork
+
+  pfe-postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: nexthealth_db
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5432:5432"
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge

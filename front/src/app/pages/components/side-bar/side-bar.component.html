@@ -1,0 +1,20 @@
+
+<div class="text-white h-full max-[600px]:hidden">
+
+
+  <aside id="logo-sidebar" class= "fixed overflow-hidden top-0 max-w-64 min-w-14 left-0 z-40 w-{{maximized?64:14}} h-screen sticky  transition-transform translate-x-0" aria-label="Sidebar">
+    <div class="relative px-3 py-4 h-full  bg-gray-800">
+      <button (click)="widthChangeClickHandler()">
+        <a  class="flex items-center p-2 bg  rounded-lg hover:bg-gray-700 group">
+          <img  src="assets/icons/list.svg" class="w-5 h-5"/>
+        </a>
+      </button>
+      <button *ngIf="maximized"  class="p-2 self-center text-xl font-semibold whitespace-nowrap  " (click)="redirectToFirstPermission()">NextHealthLink</button>
+      <ul class="space-y-2 mt-2 font-medium  ">
+
+        <app-side-bar-button *ngFor="let permission of permissions" [maximized]="maximized" [navigateTo]="permissionPages[permission]" [icon]="icons[permission]" name="{{permissionPagesTitles[permission]}}" notificationNumber="0" ></app-side-bar-button>
+
+      </ul>
+    </div>
+  </aside>
+</div>

@@ -1,0 +1,21 @@
+<div class="flex justify-between items-center w-full" >
+  <select [(ngModel)]="selectedPlant" (change)="selectPlant($event)" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+    <option selected [value]=0>Plant</option>
+    <option *ngFor="let plant of plants" [value]="plant.id">{{plant.name}}</option>
+  </select>
+
+  <select [(ngModel)]="selectedPS" (change)="selectPS($event)" *ngIf="selectionType && selectionType>0" [disabled]="!selectedPlant" class="disabled:bg-gray-200 ml-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+    <option selected [value]=0>PS</option>
+    <option *ngFor="let ps of productSections" [value]="ps.id">{{ps.name}}</option>
+  </select>
+
+  <select [(ngModel)]="selectedSegment" (change)="selectSegment($event)" *ngIf="selectionType && selectionType>1" [disabled]="!selectedPS" class="disabled:bg-gray-200 ml-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+    <option selected [value]=0>Segment</option>
+    <option *ngFor="let segment of segments" [value]="segment.id">{{segment.name}}</option>
+  </select>
+
+  <select [(ngModel)]="selectedLine" (change)="selectLine($event)" *ngIf="selectionType && selectionType>2" [disabled]="!selectedSegment" class="disabled:bg-gray-200 ml-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" >
+    <option selected [value]=0>Line</option>
+    <option *ngFor="let line of lines" [value]="line.id">{{line.name}}</option>
+  </select>
+</div>

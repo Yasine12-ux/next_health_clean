@@ -1,0 +1,7 @@
+tailleCm,poidsKg,groupeSanguin,IMC,age,sexe,HTA,diabete,dyslipidemie,autresAntecedentsFamiliaux,nbGrossesse,nbEnfantsVivants,nbMacrosomies,nbAvortements,nbMortNes,contraceptionUtilisee,ageMenopause,autresAntecedentsGynecoObstetriques,alcoolSemaine,tabacStatus,nbCigaretteParJour,drogue,autreHabitudeToxique,diagnostic,prescription,clean_autresAntecedentsFamiliaux,clean_autresAntecedentsGynecoObstetriques,clean_autreHabitudeToxique,clean_diagnostic
+165,65,B+,23.88,35,F,no,yes,yes,diabetes,1,1,0,0,0,iud,0,pcos,1,former,0,no,none,hypertension,lisinopril,diabetes,pcos,none,hypertension
+175,80,AB-,26.12,50,M,yes,no,no,hypertension,0,0,0,0,0,none,0,none,3,never,0,no,none,healthy,none,hypertension,none,none,healthy
+165,65,B+,23.88,35,F,no,yes,yes,diabetes,1,1,0,0,0,iud,0,pcos,1,former,0,no,none,hypertension,lisinopril,diabetes,pcos,none,hypertension
+175,80,AB-,26.12,50,M,yes,no,no,hypertension,0,0,0,0,0,none,0,none,3,never,0,no,none,healthy,none,hypertension,none,none,healthy
+165,65,B+,23.88,35,F,no,yes,yes,diabetes,1,1,0,0,0,iud,0,pcos,1,former,0,no,none,hypertension,lisinopril,diabetes,pcos,none,hypertension
+175,80,AB-,26.12,50,M,yes,no,no,hypertension,0,0,0,0,0,none,0,none,3,never,0,no,none,healthy,none,hypertension,none,none,healthy

@@ -1,0 +1,19 @@
+eureka:
+  client:
+    register-with-eureka: false
+server:
+  port: 8222
+spring:
+  cloud:
+    gateway:
+      mvc:
+        routes:
+          - id: structures
+            uri: http://localhost:8090
+            predicates:
+              - Path=/api/v1/structures/**
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0

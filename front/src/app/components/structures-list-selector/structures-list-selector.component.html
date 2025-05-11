@@ -1,0 +1,25 @@
+
+<div class="bg-white mt-5 px-4 py-1 rounded-md shadow-sm md:flex md:items-center md:justify-between">
+  <h2 class="text-l font-bold text-gray-900 sm:truncate sm:text-xl sm:tracking-tight">
+        {{title}}</h2>
+  <button *ngIf="!disabledAddDeleteButtons" (click)="addStructure()" type="button" class="text-blue-700 bg-white hover:bg-gray-200  font-medium rounded-full text-sm p-1 text-center inline-flex items-center me-2 ">
+    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+      <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
+    </svg>
+    <span class="sr-only">Icon description</span>
+  </button>
+</div>
+
+<div [formGroup]="form" id="countries" class=" mt-1 relative flex flex-col text-gray-700 bg-white border-2 rounded-xl bg-clip-border">
+    <div *ngFor="let structure of structures?.controls; let i = index" class="flex justify-between items-center w-full py-1 pl-1 pr-1 leading-tight transition-all rounded-lg outline-none text-start hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900 focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-blue-gray-900 active:bg-blue-gray-50 active:bg-opacity-80 active:text-blue-gray-900">
+      <button *ngIf="!disabledAddDeleteButtons" (click)="deleteStructure(i)" class="p-2 btn btn-primary rounded-full text-red-600 hover:bg-gray-200" type="button" >
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+          <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+        </svg>
+      </button>
+      <div class="w-full" formArrayName="structures">
+        <app-structures-list-selector-item [selectionType]="selectionType" [defaultStructureId]="defaultValues ? defaultValues[i] : 0"></app-structures-list-selector-item>
+      </div>
+    </div>
+</div>
+

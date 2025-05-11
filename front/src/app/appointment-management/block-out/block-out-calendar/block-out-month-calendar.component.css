@@ -1,0 +1,4 @@
+.fc-day-today {
+  background-color: transparent !important; /* Hide background color */
+  color: inherit !important; /* Use default text color */
+}

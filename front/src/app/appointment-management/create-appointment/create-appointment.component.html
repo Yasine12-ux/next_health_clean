@@ -1,0 +1,99 @@
+<!-- Initialisation et affichage du tiroir -->
+<div class="text-center w-40">
+  <button (click)="drawer?.show()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2 " type="button" aria-controls="drawer-appointment">
+    Ajouter RDV
+  </button>
+</div>
+
+<!-- Composant de tiroir -->
+<div id="drawer-appointment" class="fixed top-0 left-0 z-40 h-screen p-4 overflow-y-auto transition-transform -translate-x-full bg-white w-[500px] dark:bg-gray-800" tabindex="-1" aria-labelledby="drawer-contact-label">
+  <h5 id="drawer-label" class="inline-flex items-center mb-6 text-base font-semibold text-gray-500 uppercase dark:text-gray-400">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar2-event me-3" viewBox="0 0 16 16">
+      <path d="M11 7.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5z"/>
+      <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M2 2a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1z"/>
+      <path d="M2.5 4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5z"/>
+    </svg>
+    Ajouter RDV</h5>
+  <form (ngSubmit)="saveAppointment()" ngNativeValidate class="mb-6">
+    <div class="border-b border-gray-900/10 pb-2 mb-2">
+
+      <label for="patientselect" class="block mb-2 text-sm font-medium text-gray-900">Sélectionnez l'employeur
+      </label>
+      <div  id="patientselect" class="mb-6  grid-cols-2 flex">
+        <div *ngIf="router.url.includes('/inf/')" class="w-full me-2 ">
+          <select name="selectedPsId" [(ngModel)]="selectedPsId" (change)="loadSegmentsWithPS($event)"  id="ps" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+            <option value='0' selected disabled>Product Section</option>
+            <option  *ngFor="let ps of Pss" [value]="ps.productSectionId">
+              {{ps.name}}
+            </option>
+
+          </select>
+
+        </div>
+        <div class="w-full ">
+          <select name="selectedSegmentId" [(ngModel)]="selectedSegmentId" (change)="loadLines($event)"  id="segment" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            <option [value]=0 selected disabled>Segment</option>
+            <option  *ngFor="let segment of segments" [value]="segment.id">
+              {{segment.name}}
+            </option>
+
+          </select>
+        </div>
+
+        <div class="ms-2 w-full ">
+          <select name="selectedLineId" [(ngModel)]="selectedLineId" [disabled]="selectedSegmentId==0" (change)="loadWorkers($event)" id="line" class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            <option [value]=0 selected disabled>Ligne</option>
+            <option *ngFor="let line of lines" [value]="line.id">{{line.name}}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="w-full mb-6 ">
+        <select name="patientId" (change)="patientStyleClass='normal'" [(ngModel)]="form.patientId" [disabled]="selectedLineId==0" id="patient" [class]="dateStylesDict[patientStyleClass]">
+          <option [value]="0" selected disabled>Employeur</option>
+          <option *ngFor="let worker of workers" [value]="worker.id">{{worker.firstname+" "+worker.lastname}}</option>
+        </select>
+        <p *ngIf="patientStyleClass=='invalid'" class="mt-2 text-sm text-red-600"><span class="font-medium">Oh!</span> ce patient a déjà un rendez-vous.</p>
+      </div>
+    </div>
+
+    <div *ngIf="router.url.includes('/rh/')" class="border-b border-gray-900/10 pb-2 mb-2">
+
+    <label for="patientPlant" class="block mb-2 text-sm font-medium text-gray-900">Sélectionnez le cabinet médical
+      </label>
+      <div  id="patientPlant" class="mb-6 me-2 grid-cols-2 flex">
+        <div class="w-full ">
+          <select (change)="timesDispo=[];dateInput.value=''" name="appointmentLocationPlantId" [(ngModel)]="form.appointmentLocationPlantId" id="plant" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            <option  [value]=0 selected>Cabinet médical</option>
+            <option  *ngFor="let plant of plants" [value]="plant.id">
+
+              {{plant.name}}
+            </option>
+
+          </select>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="mb-6 ">
+      <label for="date" class="block mb-2 text-sm font-medium text-gray-900">Date</label>
+      <input #dateInput [disabled]="!this.form.appointmentLocationPlantId" (change)="showDateDispo($event)" type="date" id="date" [class]="dateStylesDict[dateStyleClass]" required />
+      <p *ngIf="dateStyleClass=='invalid'" class="mt-2 text-sm text-red-600"><span class="font-medium">Oh!</span> vous ne pouvez pas sélectionner cette date, elle est passée.</p>
+      <p *ngIf="dateStyleClass=='full'" class="mt-2 text-sm text-purple-600"><span class="font-medium">Oh!</span> Il n'y a aucun créneau horaire disponible pour cette date.</p>
+    </div>
+    <div class="mb-6">
+      <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sélectionnez l'heure</label>
+      <select name="selectedTime" [(ngModel)]="selectedTime" [disabled]="!timesDispo.length" id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+        <option *ngFor="let time of timesDispo" [value]="time">{{time}}</option>
+
+      </select>
+    </div>
+    <div class="mb-6">
+      <label  for="note" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Note</label>
+      <textarea  name="appointmentDescription" [(ngModel)]="form.appointmentDescription"  id="note" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="note..."></textarea>
+    </div>
+    <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 w-full focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 block"> Enregistrer
+    </button>
+  </form>
+</div>

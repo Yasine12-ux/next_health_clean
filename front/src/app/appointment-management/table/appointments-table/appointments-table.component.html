@@ -1,0 +1,205 @@
+<div class=" shadow-md sm:rounded-lg  p-6" xmlns="http://www.w3.org/1999/html">
+
+  <div class="flex  flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between pb-4">
+    <label for="table-search" class="sr-only">Recherche</label>
+    <div class="relative">
+      <div class="absolute inset-y-0 left-0 rtl:inset-r-0 rtl:right-0 flex items-center ps-3 pointer-events-none">
+        <svg class="w-5 h-5 text-gray-500" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+      </div>
+      <input
+        [formControl]="searchFormControl"
+        type="text" id="table-search" class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Rechercher des rendez-vous">
+    </div>
+
+    <div class="flex  flex-column">
+      <select (change)="setCabinet($event)" *ngIf="router.url.includes('/rh/appointments/list')" id="countries" class="text-blue-700 border border-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2 text-center me-2 mb-2 inline-flex items-center">
+        <option class="text-left" value=0 selected>Tous les Cabinets</option>
+        <option *ngFor="let plant of plants" class="text-left" [value]=plant.id>{{plant.name}}</option>
+      </select>
+      <!-- Dropdown btn -->
+      <button id="dropdownToggleButtonUsersFilter" data-dropdown-toggle="dropdownToggleUsersFilter" class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2 text-center me-2 mb-2 inline-flex items-center" type="button">
+        Filtrer le Statut
+        <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+        </svg>
+      </button>
+    </div>
+
+
+    <!-- Dropdown menu -->
+    <div id="dropdownToggleUsersFilter" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-52 dark:bg-gray-700 dark:divide-gray-600">
+      <ul class="p-3 space-y-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownToggleButtonUsersFilter">
+        <li>
+          <div class="flex p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
+            <label class="inline-flex items-center w-full cursor-pointer">
+              <input name="show_archive" type="checkbox" (change)="changeStatusFilter()" [(ngModel)]="filterParamsVar.SCHEDULED" value="" class="sr-only peer">
+              <div class="relative w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-600 peer-checked:after:translate-x-full rtl:peer-checked:after:translate-x-[-100%] peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-500 peer-checked:bg-blue-600"></div>
+              <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Planifié</span>
+            </label>
+          </div>
+        </li>
+        <li>
+          <div class="flex p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
+            <label class="inline-flex items-center w-full cursor-pointer">
+              <input name="show_enabled" type="checkbox" (change)="changeStatusFilter()" [(ngModel)]="filterParamsVar.COMPLETED" value="" class="sr-only peer">
+              <div class="relative w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-600 peer-checked:after:translate-x-full rtl:peer-checked:after:translate-x-[-100%] peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-500 peer-checked:bg-blue-600"></div>
+              <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Complet</span>
+            </label>
+          </div>
+        </li>
+        <li>
+          <div class="flex p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
+            <label class="inline-flex items-center w-full cursor-pointer">
+              <input name="show_disabled" type="checkbox" (change)="changeStatusFilter()" [(ngModel)]="filterParamsVar.CANCELLED" value="" class="sr-only peer">
+              <div class="relative w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-600 peer-checked:after:translate-x-full rtl:peer-checked:after:translate-x-[-100%] peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-500 peer-checked:bg-blue-600"></div>
+              <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Annulé</span>
+            </label>
+          </div>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+
+
+  <table cdk-table [dataSource]="dataOnPage$" class=" w-full text-sm text-center rtl:text-right text-gray-500 ">
+    <!-- Header and Row Declarations -->
+    <tr  cdk-header-row *cdkHeaderRowDef="displayedColumns$.value" class="text-xs text-gray-700 capitalize bg-gray-50"></tr>
+    <tr cdk-row *cdkRowDef="let row; columns: displayedColumns$.value" class="bg-white border-b hover:bg-gray-50"></tr>
+
+    <!-- Hero Name Column -->
+    <ng-container cdkColumnDef="patientName">
+      <th class="w-1/5 px-6 py-3" cdk-header-cell *cdkHeaderCellDef (click)="adjustSort('patientName')">
+        Nom du patient <span *ngIf="sortKey$.value === 'patientName'">{{ sortDirection$.value === 'asc' ? '⬆️' : '⬇️' }}</span>
+      </th>
+      <td class="w-1/5 w-4 p-2" cdk-cell *cdkCellDef="let row">
+        <span class="items-center me-3">
+            <span *ngIf="row.createdNow" class="flex w-2.5 h-2.5 bg-green-600 rounded-full me-1.5 flex-shrink-0"></span>
+          {{row.patientName}}
+      </span>
+      </td>
+    </ng-container>
+
+    <ng-container cdkColumnDef="status">
+      <th class=" w-1/5 py-3" cdk-header-cell *cdkHeaderCellDef (click)="adjustSort('status')">
+        Statut <span *ngIf="sortKey$.value === 'status'">{{ sortDirection$.value === 'asc' ? '⬆️' : '⬇️' }}</span>
+      </th>
+      <td class="w-1/5 text-center" cdk-cell
+          *cdkCellDef="let row">
+        <span [class]="RdvStateStyle[row.status]">
+               {{AppointmentStatusInFr[row.status]}}
+        </span>
+      </td>
+    </ng-container>
+
+
+    <!-- Hero Defense Column -->
+    <ng-container cdkColumnDef="startTime">
+      <th class="w-1/5 px-6 py-3" cdk-header-cell *cdkHeaderCellDef (click)="adjustSort('startTime')">
+        L'heure <span *ngIf="sortKey$.value === 'startTime'">{{ sortDirection$.value === 'asc' ? '⬆️' : '⬇️' }}</span>
+      </th>
+      <td class="w-1/5 p-2" cdk-cell
+          *cdkCellDef="let row">
+        {{row.startTime.split("T").join("  ").split(".")[0]}}
+      </td>
+    </ng-container>
+    <!-- Level Up Column -->
+    <ng-container cdkColumnDef="Action">
+      <th class="w-1/5 text-center px-3 py-3" cdk-header-cell *cdkHeaderCellDef>
+        Action
+      </th>
+      <td class="w-1/5 text-center" cdk-cell *cdkCellDef="let row">
+
+
+        <!--        Complete-->
+<!--        <button-->
+<!--          *ngIf="router.url.includes('/inf/appointments/')"-->
+<!--          [disabled]="[AppointmentStatus.CANCELLED, AppointmentStatus.COMPLETED].includes(row.status)"-->
+<!--          (click)="showCompleteConfirmationDialog(row.id,AppointmentStatus.COMPLETED)"-->
+<!--          class="p-2 btn btn-primary rounded-full text-green-600 hover:bg-gray-200 disabled:text-gray-300 disabled:hover:bg-gray-50"-->
+<!--        >-->
+<!--          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2-all" viewBox="0 0 16 16">-->
+<!--            <path d="M12.354 4.354a.5.5 0 0 0-.708-.708L5 10.293 1.854 7.146a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0zm-4.208 7-.896-.897.707-.707.543.543 6.646-6.647a.5.5 0 0 1 .708.708l-7 7a.5.5 0 0 1-.708 0"/>-->
+<!--            <path d="m5.354 7.146.896.897-.707.707-.897-.896a.5.5 0 1 1 .708-.708"/>-->
+<!--          </svg>-->
+<!--        </button>-->
+        <!--        Show-->
+        <button (click)="appointmentDetailsComponent.appointmentResponse=row; drawer?.show()" class=" p-2 btn btn-primary rounded-full text-blue-600 hover:bg-gray-200">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+            <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/>
+            <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"/>
+          </svg>
+        </button>
+        <!--        Annuler-->
+        <button
+          *ngIf="!router.url.includes('/manager')"
+          [disabled]="[AppointmentStatus.CANCELLED, AppointmentStatus.COMPLETED].includes(row.status)"
+          (click)="showCancelConfirmationDialog(row.id,AppointmentStatus.CANCELLED)"
+          class="p-2 btn btn-primary rounded-full text-red-600 hover:bg-gray-200 disabled:text-gray-300 disabled:hover:bg-gray-50"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+          </svg>
+        </button>
+      </td>
+    </ng-container>
+
+
+
+  </table>
+
+  <div class="flex flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between pb-4">
+    <div>
+      <button id="dropdownRadioButtonUsers" data-dropdown-toggle="dropdownRadioUsers" class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5" type="button">
+        {{pageSize$.value}}  rdv par page
+        <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+        </svg>
+      </button>
+      <!-- Dropdown menu -->
+      <div id="dropdownRadioUsers" class="z-10 hidden w-48 bg-white divide-y divide-gray-100 rounded-lg shadow" data-popper-reference-hidden="" data-popper-escaped="" data-popper-placement="top" style="position: absolute; inset: auto auto 0px 0px; margin: 0px; transform: translate3d(522.5px, 3847.5px, 0px);">
+        <ul class="p-3 space-y-1 text-sm text-gray-700" aria-labelledby="dropdownRadioButton">
+          <li *ngFor="let i of [5,10,20]">
+            <div class="flex items-center p-2 rounded hover:bg-gray-100" (click)="handleClick(i)">
+              <input  id="filter-radio-user-{{i}}" type="radio" value="" name="filter-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
+              <label for="filter-radio-user-{{i}}" class="w-full ms-2 text-sm font-medium text-gray-900 rounded">{{i}} rdv par page</label>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <label for="table-search" class="sr-only">Search</label>
+    <div class="relative">
+      <div class="float-right">
+        <app-pagination
+          [collectionSize]="dataSize"
+          [pageSize]=pageSize$.value
+          (pageChange)="changeCurrentPage($event)"
+          [currentPage]=currentPage$.value
+        >
+        </app-pagination>
+      </div>
+    </div>
+  </div>
+
+<app-comfirmation-dialog
+  [confirmBtnText]="'Confirmer'"
+  [title]="'Annuler le rendez-vous'"
+  [message]="'Êtes-vous sûr de vouloir annuler ce rendez-vous?'"
+  [hidden]="cancelConfirmationDialogHidden"
+  (confirmClicked)="confirmCancel($event)"
+></app-comfirmation-dialog>
+
+<app-comfirmation-dialog
+  [confirmBtnText]="'Confirmer'"
+  [title]="'Terminer le rendez-vous'"
+  [message]="'Êtes-vous sûr de vouloir marquer ce rendez-vous comme terminé?'"
+  [hidden]="completeConfirmationDialogHidden"
+  (confirmClicked)="confirmComplete($event)"
+></app-comfirmation-dialog>
+
+
+</div>
+<app-appointment-details [drawer]="drawer" ></app-appointment-details>
+
+

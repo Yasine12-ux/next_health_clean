@@ -1,0 +1,85 @@
+eureka:
+  instance:
+    hostname: ${spring.application.name}:${spring.cloud.client.hostname}
+  client:
+    service-url:
+      defaultZone: http://discovery-server:8761/eureka
+
+spring:
+  application:
+    name: api-gateway-auth
+  config:
+    import: optional:configserver:http://localhost:8888
+  servlet:
+    multipart:
+      max-file-size: 3MB
+      max-request-size: 10MB
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/nexthealth_db
+    username: admin
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      connection-timeout: 30000 # 30 seconds
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: false
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+  profiles:
+    active: dev
+  mail:
+    host: smtp-mail.outlook.com
+    port: 587
+    username: ${MAIL_USERNAME}                               #Replace this field with your Outlook username.
+    password: ${MAIL_PASSWORD}                                           #Replace this field with your Outlook password.
+    protocol: smtp
+    tls: true
+    properties.mail.smtp:
+      auth: true
+      starttls.enable: true
+      ssl.trust: smtp-mail.outlook.com
+  task:
+    scheduling:
+      pool:
+        size: 10
+    schedules:
+      deleteExpiredCodesTask:
+        fixed-delay: 10000
+application:
+  security:
+    jwt:
+      secret-key: ${JWT_SECRET}
+      expiration: 86400000 # a day
+      refresh-token:
+        expiration: 604800000 # 7 days
+
+  config:
+    appointments-url: http://appointments:8070/api/v1
+    dossier-medical-url: http://medical-record:8060/api/v1
+
+security:
+  ignored:
+    - "*.bundle.*"
+
+server:
+  port: 8080
+
+
+
+twilio:
+  account-sid: ${TWILIO_SID}
+  auth-token: ${TWILIO_AUTH_TOKEN}
+  trial-number: ${TWILIO_NUMBER}
+
+
+cors:
+  allowedOrigins:
+    - "http://localhost"
+    - "http://4.233.140.173"

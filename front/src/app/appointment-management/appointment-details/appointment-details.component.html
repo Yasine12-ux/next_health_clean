@@ -1,0 +1,71 @@
+<!-- composant de tiroir -->
+<div id="drawer-rdv-details" class="fixed top-0 left-0 z-40 h-screen p-4 overflow-y-auto transition-transform -translate-x-full bg-white w-1/2 min-w-[600px]" tabindex="-1" aria-labelledby="drawer-left-label">
+ <div class="flex justify-between"> <h5 id="drawer-left-label" class="inline-flex items-center mb-4 text-base font-semibold text-gray-500 dark:text-gray-400"><svg class="w-4 h-4 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+    <path d="M10 .5a9.5 9.5 0 1 1 0 19 9.5 9.5 0 0 1 0-19ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+  </svg>Détails du rendez-vous</h5>
+ <div > <button *ngIf="(route.url.includes('inf/inf/appointments')||route.url.includes('/doctor/doctor/appointments'))"
+           type="button" class="m-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" (click)="fiche()">
+     Fiche Patient</button>
+
+   <button *ngIf="route.url.includes('/doctor/doctor/appointments') && appointmentResponse?.status!=AppointmentStatus.CANCELLED"
+           type="button" class="m-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" (click)="consultation()">
+     Consultation</button>
+ </div>
+</div>
+  <div class="overflow-hidden bg-white shadow sm:rounded-lg">
+
+    <div class="border-t border-gray-100">
+      <dl class="divide-y divide-gray-100">
+        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+          <dt class="text-sm font-medium text-gray-900">Employé:</dt>
+          <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{appointmentResponse?.patientName}}</dd>
+        </div>
+        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+          <dt class="text-sm font-medium text-gray-900">Cabinet:</dt>
+          <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{appointmentResponse?.appointmentLocationPlantName}}</dd>
+        </div>
+        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+          <dt class="text-sm font-medium text-gray-900">Date du rendez-vous:</dt>
+          <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+            <span class="bg-gray-100 text-gray-800 text-xs font-medium  px-2.5 py-0.5 rounded border border-gray-400">
+                          {{prepareDateTime(appointmentResponse?.startTime)}}
+            </span>
+          </dd>
+        </div>
+
+        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+          <dt class="text-sm font-medium text-gray-900">Statut du rendez-vous:</dt>
+          <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+            <span [class]="appointmentResponse?.status?RdvStateStyle[appointmentResponse?.status+'']:''">
+              {{appointmentResponse?AppointmentStatusInFr[appointmentResponse.status]:''}}
+            </span></dd>
+        </div>
+
+        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+          <dt class="text-sm font-medium text-gray-900">Rendez-vous pris par:</dt>
+          <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{appointmentResponse?.createdBy}}</dd>
+        </div>
+
+        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+          <dt class="text-sm font-medium text-gray-900">Date de prise de rendez-vous:</dt>
+          <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                        <span class="bg-gray-100 text-gray-800 text-xs font-medium  px-2.5 py-0.5 rounded border border-gray-400">
+                      {{prepareDateTime(appointmentResponse?.creationDate)}}
+                        </span></dd>
+        </div>
+
+        <div *ngIf="appointmentResponse?.canceledBy" class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+          <dt class="text-sm font-medium text-gray-900">Rendez-vous annulé par:</dt>
+          <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{appointmentResponse?.canceledBy}}</dd>
+        </div>
+
+        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+          <dt class="text-sm font-medium text-gray-900" *ngIf="appointmentResponse?.appointmentDescription">Note:</dt>
+          <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{appointmentResponse?.appointmentDescription}}</dd>
+        </div>
+
+      </dl>
+    </div>
+  </div>
+
+</div>

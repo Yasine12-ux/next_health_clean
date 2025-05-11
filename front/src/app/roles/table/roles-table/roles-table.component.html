@@ -1,0 +1,118 @@
+<div class= " shadow-md sm:rounded-lg  p-6">
+  <div class="flex  flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between pb-4">
+    <label for="table-search" class="sr-only">Recherche</label>
+    <div class="relative">
+      <div class="absolute inset-y-0 left-0 rtl:inset-r-0 rtl:right-0 flex items-center ps-3 pointer-events-none">
+        <svg class="w-5 h-5 text-gray-500  " aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+      </div>
+      <input
+        [formControl]="searchFormControl"
+        type="text" id="table-search" class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 " placeholder="Recherche de rôles">
+    </div>
+  </div>
+
+  <table cdk-table [dataSource]="dataOnPage$" class="w-full text-sm text-left rtl:text-right text-gray-500  ">
+    <tr  cdk-header-row *cdkHeaderRowDef="displayedColumns$.value" class="text-xs text-gray-700 capitalize bg-gray-50 *"></tr>
+    <tr cdk-row *cdkRowDef="let row; columns: displayedColumns$.value" class="bg-white border-b *"></tr>
+
+    <ng-container cdkColumnDef="name">
+      <th class="px-6 py-3" cdk-header-cell *cdkHeaderCellDef (click)="adjustSort('name')">
+        Nom <span *ngIf="sortKey$.value === 'name'">{{ sortDirection$.value === 'asc' ? '⬆️' : '⬇️' }}</span>
+      </th>
+      <td class="w-4 p-2" cdk-cell *cdkCellDef="let row">
+        <span class="flex items-center me-3">
+                  <span *ngIf="row.createdNow" class="flex w-2.5 h-2.5 bg-green-600 rounded-full me-1.5 flex-shrink-0"></span> {{row.name}}
+      </span>
+      </td>    </ng-container>
+
+    <ng-container cdkColumnDef="description">
+      <th class=" px-6 py-3" cdk-header-cell *cdkHeaderCellDef (click)="adjustSort('description')">
+        Description <span *ngIf="sortKey$.value === 'description'">{{ sortDirection$.value === 'asc' ? '⬆️' : '⬇️' }}</span>
+      </th>
+      <td class="w-1/2 max-w-4 overflow-hidden  p-2 " cdk-cell *cdkCellDef="let row"> {{row.description?row.description:'....'}} </td>
+    </ng-container>
+
+    <ng-container cdkColumnDef="nbUsers">
+      <th class="px-6 py-3 text-center" cdk-header-cell *cdkHeaderCellDef (click)="adjustSort('nbUsers')">
+        Utilisateurs <span *ngIf="sortKey$.value === 'nbUsers'">{{ sortDirection$.value === 'asc' ? '⬆️' : '⬇️' }}</span>
+      </th>
+      <td class="w-4 p-2 text-center" cdk-cell
+          *cdkCellDef="let row">
+        {{row.nbUsers}}
+      </td>
+    </ng-container>
+
+
+    <!-- Level Up Column -->
+    <ng-container cdkColumnDef="actions">
+      <th class="px-6 py-3" cdk-header-cell *cdkHeaderCellDef>
+        Action
+      </th>
+      <td class="w-4 p-2" cdk-cell *cdkCellDef="let row">
+        <!--          disable enable-->
+        <button (click)="duplicateRole(row.name)" class=" p-2 btn btn-primary rounded-full text-green-600 hover:bg-gray-200" >
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-copy" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1z"/>
+          </svg>
+        </button>
+        <!--        edit-->
+        <button (click)="roleToModify=row;editRoleDetailsComponent.canEdit=(row.nbUsers>0);editRoleDetailsComponent.showDrawer(row);"  class=" disabled:text-gray-300 p-2 btn btn-primary rounded-full text-blue-600 enabled:hover:bg-gray-200 " type="button" >
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+          </svg>
+        </button>
+
+        <!--        delete-->
+        <button (click)="deleteRole(row.id)" [disabled]="row.nbUsers>0"    class=" p-2 btn btn-primary disabled:text-gray-300 rounded-full text-red-600 enabled:hover:bg-gray-200">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+          </svg>
+        </button>
+      </td>
+    </ng-container>
+
+
+  </table>
+
+  <div class="flex flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between pb-4">
+    <div>
+    <button id="dropdownRadioButtonroles" data-dropdown-toggle="dropdownRadioRole" class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5  " type="button">
+        {{pageSize$.value}} rôles par page
+        <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+        </svg>
+      </button>
+      <!-- Dropdown menu -->
+      <div id="dropdownRadioRole" class="z-10 hidden w-48 bg-white divide-y divide-gray-100 rounded-lg shadow  " data-popper-reference-hidden="" data-popper-escaped="" data-popper-placement="top" style="position: absolute; inset: auto auto 0px 0px; margin: 0px; transform: translate3d(522.5px, 3847.5px, 0px);">
+        <ul class="p-3 space-y-1 text-sm text-gray-700 " aria-labelledby="dropdownRadioButton">
+          <li *ngFor="let i of [5,10,20]">
+            <div class="flex items-center p-2 rounded hover:bg-gray-100 " (click)="handleClick(i)">
+              <input  id="filter-radio-roles-{{i}}" type="radio" value="" name="filter-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2 ">
+              <label for="filter-radio-roles-{{i}}" class="w-full ms-2 text-sm font-medium text-gray-900 rounded">{{i}} rôles par page</label>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <label for="table-search" class="sr-only">Recherche</label>
+    <div class="relative">
+      <div class="float-right">
+        <app-pagination
+          [collectionSize]="dataSize"
+          [pageSize]=pageSize$.value
+          (pageChange)="changeCurrentPage($event)"
+          [currentPage]=currentPage$.value
+        >
+        </app-pagination>
+      </div>
+    </div>
+  </div>
+
+  <app-comfirmation-dialog [confirmBtnText]="deleteConfirmationDialogConfirmBtnText" [title]="deleteConfirmationDialogTitle" [message]="deleteConfirmationDialogMessage" [hidden]="deleteConfirmationDialogHidden" (confirmClicked)="confirmDelete($event)"></app-comfirmation-dialog>
+  <app-comfirmation-dialog [confirmBtnText]="duplicateConfirmationDialogConfirmBtnText" [title]="duplicateConfirmationDialogTitle" [message]="duplicateConfirmationDialogMessage" [hidden]="duplicateConfirmationDialogHidden" (confirmClicked)="confirmDuplication($event)"></app-comfirmation-dialog>
+
+  <edit-role-details></edit-role-details>
+
+</div>

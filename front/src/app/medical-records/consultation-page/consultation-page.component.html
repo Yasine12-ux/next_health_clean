@@ -1,0 +1,338 @@
+
+<!-- drawer component -->
+<div id="drawer-detaille-consultation"
+     class="fixed top-0 right-0 z-40 h-screen p-4 overflow-y-auto transition-transform translate-x-full bg-white w-[600px] dark:bg-gray-800" tabindex="-1" aria-labelledby="drawer-right-label">
+  <h5 id="drawer-right-label" class="inline-flex items-center mb-4 text-base font-semibold text-gray-500 dark:text-gray-400">
+    Details de la consultation
+  </h5>
+  <button type="button" data-drawer-hide="drawer-detaille-consultation" aria-controls="drawer-detaille-consultation" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 absolute top-2.5 end-2.5 inline-flex items-center justify-center dark:hover:bg-gray-600 dark:hover:text-white" >
+    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+    </svg>
+    <span class="sr-only">Close menu</span>
+  </button>
+  <h1 class="py-2">Motif</h1>
+  <h1 class="ml-2 text-sm py-2">{{consultationDetailleToShow?.motif}}</h1>
+  <h1 class="py-2">Diagnostic</h1>
+  <ckeditor class="" [config]="editorConfigDetaille" [editor]="EditorDetaille" [data]="consultationDetailleToShow?.diagnostic+''" (ready)="onReady2($event)"></ckeditor>
+</div>
+
+<!--------------------------------->
+<div *ngIf="showAddExamen" class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+  <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+
+  <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+    <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+      <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+        <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+          <div class="sm:flex sm:items-start">
+
+
+            <div class=" w-[500px] p-5 mx-auto">
+              <div class="mb-6">
+                <p class="text-2xl font-bold text-center">DEMANDE D'EXAMEN</p>
+              </div>
+
+              <div class="mb-4">
+                <label for="phone" class="block text-gray-700 font-bold mb-2">Tél. prof:</label>
+                <input id="phone" [(ngModel)]="phone" class="w-full border rounded-lg p-2" type="text">
+              </div>
+
+              <div class="mb-4">
+                <label for="treatmentReason" class="block text-gray-700 font-bold mb-2">Région à examiner:</label>
+                <textarea id="treatmentReason" [(ngModel)]="treatmentReason" class="w-full border rounded-lg p-2" type="text"></textarea>
+              </div>
+
+              <div class="mb-4">
+                <p class="block text-gray-700 font-bold mb-2">Examen</p>
+                <div class="flex flex-wrap">
+                  <label class="w-full mb-2">
+                    <input type="radio" [(ngModel)]="selectedRegion" value="Radiographie(s)" class="mr-2" (change)="showOtherInput = false" checked>  Radiographie(s)
+                  </label>
+                  <label class="w-full mb-2">
+                    <input type="radio" [(ngModel)]="selectedRegion" value="Echographie" class="mr-2" (change)="showOtherInput = false"> Echographie
+                  </label>
+                  <label class="w-full mb-2">
+                    <input type="radio" [(ngModel)]="selectedRegion" value="IRM" class="mr-2" (change)="showOtherInput = false"> IRM
+                  </label>
+                  <label class="w-full mb-2">
+                    <input type="radio" [(ngModel)]="selectedRegion" value="Scanner" class="mr-2" (change)="showOtherInput = false"> Scanner
+                  </label>
+                  <label class="w-full mb-2">
+                    <input type="radio" [(ngModel)]="selectedRegion" value="Mammographie" class="mr-2" (change)="showOtherInput = false"> Mammographie
+                  </label>
+                  <label class="w-full mb-2">
+                    <input type="radio" [(ngModel)]="selectedRegion" value="" class="mr-2" (change)="showOtherInput = true"> Autre
+                  </label>
+                </div>
+              </div>
+
+              <div *ngIf="showOtherInput" class="mb-4">
+                <label for="otherRegion" class="block text-gray-700 font-bold mb-2">Autre Examen:</label>
+                <input id="otherRegion" [(ngModel)]="selectedRegion" class="w-full border rounded-lg p-2" type="text">
+              </div>
+
+              <button (click)="saveExamen()"  class="w-full p-2   mb-2 bg-blue-500 text-white rounded">Sauvegarder</button>
+              <button (click)="showAddExamen=false"  class=" w-full py-2.5 px-5  text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">Annuler</button>
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--------------------------------->
+<div *ngIf="showDetailExamen" class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+  <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+
+  <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+    <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+      <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+        <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+          <div class="sm:flex sm:items-start">
+
+
+            <div class=" w-[500px] p-5 mx-auto">
+              <div class="mb-6">
+                <p class="text-2xl font-bold text-center">EXAMEN</p>
+              </div>
+              <label for="date" class="block text-gray-700 font-bold mb-2">Date:</label>
+              <input id="date" [(ngModel)]=" examenDetailleToShow.date.split('T')[0]" class="w-full border rounded-lg p-2 disabled:bg-gray-100" type="text" disabled>
+
+              <label for="region_examine" class="block text-gray-700 font-bold mb-2">Région examinée:</label>
+              <input id="region_examine" name="regionexamenee" [(ngModel)]="examenDetailleToShow.regionexamenee" [disabled]="!showDetailExamenEditable" class="disabled:bg-gray-100 w-full border rounded-lg p-2" type="text" disabled>
+
+              <label for="type" class="block text-gray-700 font-bold mb-2">Type:</label>
+              <input id="type" name="type" [(ngModel)]="examenDetailleToShow.type" [disabled]="!showDetailExamenEditable" class="disabled:bg-gray-100 w-full border rounded-lg p-2" type="text" disabled>
+
+              <label for="resultat" class="block text-gray-700 font-bold mb-2">Resultat:</label>
+              <textarea id="resultat" name="resultat" [(ngModel)]="examenDetailleToShow.resultat" [disabled]="!showDetailExamenEditable" class="disabled:bg-gray-100 w-full border rounded-lg p-2" type="text" disabled></textarea>
+
+
+              <button *ngIf="showDetailExamenEditable" (click)="addResultatExamen()" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">Sauvegarder</button>
+              <button (click)="imprimeExamen()" *ngIf="!showDetailExamenEditable" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">Imprimer</button>
+              <button (click)="showDetailExamen=false" class="w-full py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">
+                Annuler
+              </button>
+
+              </div>
+           </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+
+
+
+
+<div class="flex col-span-2 bg-white shadow-sm p-2 my-2 justify-between">
+  <div class="flex col-span-2">
+    <img class="h-9 w-7" src="assets/icons/notte.png">
+    <h1 class="ml-2 text-2xl">Consultation</h1>
+  </div>
+  <button (click)="completeFullConsultation()" *ngIf="!fullConsultation.consultation.complete" type="button" class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2">
+    Complete</button>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-1   font-sans bg-gray-50">
+  <div class=" col-span-2 bg-white shadow-sm rounded-lg p-6 flex-1">
+      <input  [(ngModel)]="fullConsultation.consultation.motif" name="motif"
+              [disabled]="fullConsultation.consultation.complete==true"
+        type="text" id="motif" class="w-full p-2 border border-gray-300 rounded mb-4 text-sm disabled:bg-gray-100" placeholder="Motif"/>
+
+    <div class="border p-2 border-gray-300 rounded">
+
+    <button (click)="showOrHideBiometrie()" class="font-medium text-gray-900 w-full  flex justify-between ">
+      <p>
+        Ajouter biometrie (optionnel)
+      </p>
+
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/>
+      </svg>
+    </button>
+      <div  [ngClass]="{ 'hidden': !fullBiometrie, 'grid grid-cols-4 gap-1 my-4 ': fullBiometrie}">
+
+        <div>
+          <label for="poids" class="block mb-2 text-xs font-medium text-gray-900">Poids (Kg)</label>
+          <input [disabled]="fullConsultation.consultation.complete==true" [(ngModel)]="fullConsultation.consultation.poidsKg" name="poidsKg"
+            id="poids" type="number" class="w-full p-2 border border-gray-300 rounded text-xs  disabled:bg-gray-100" placeholder="Poids en Kg"/>
+        </div>
+        <div>
+          <label for="taille" class="block mb-2 text-xs font-medium text-gray-900">Taille (Cm)</label>
+          <input [disabled]="fullConsultation.consultation.complete==true" [(ngModel)]="fullConsultation.consultation.tailleCm" name="tailleCm"
+            id="taille" type="number" class="w-full p-2 border border-gray-300 rounded text-xs  disabled:bg-gray-100" placeholder="Taille en Cm"/>
+        </div>
+        <div>
+          <label for="pouls" class="block mb-2 text-xs font-medium text-gray-900">Pouls</label>
+          <input [disabled]="fullConsultation.consultation.complete==true"  [(ngModel)]="fullConsultation.consultation.pouls" name="pouls"
+            id="pouls" type="number" class="w-full p-2 border border-gray-300 rounded text-xs  disabled:bg-gray-100" placeholder="Pouls"/>
+        </div>
+        <div>
+          <label for="TA" class="block mb-2 text-xs font-medium text-gray-900">Tension Artérielle</label>
+          <input [disabled]="fullConsultation.consultation.complete==true" id="TA"  [(ngModel)]="fullConsultation.consultation.tensionArterielle" name="tensionArterielle"
+                 type="number" class="w-full p-2 border border-gray-300 rounded text-xs  disabled:bg-gray-100" placeholder="Tension Artérielle"/>
+        </div>
+
+      </div>
+      </div>
+    <h2 class="font-medium text-gray-900 ms-1 mb-2 mt-4">Diagnostic</h2>
+    <ckeditor [disabled]="fullConsultation.consultation.complete==true" name="diagnostic" [(ngModel)]="fullConsultation.consultation.diagnostic"
+              class="" [config]="editorConfig" [editor]="Editor" data="<p></p>" (ready)="onReady($event)"></ckeditor>
+
+
+    <div *ngIf="!fullConsultation.consultation.complete" class="mt-4 border p-2 border-gray-200 rounded">
+
+      <button (click)="showOrHideOrdonnance()" class="font-medium text-gray-900 w-full  flex justify-between ">
+        <p>
+          Créer ordonnance
+        </p>
+
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/>
+        </svg>
+      </button>
+
+
+
+      <div [ngClass]="{ 'hidden': !fullOrdonnance, 'w-full grid gap-1 my-4': fullOrdonnance}">
+        <div class="w-full">
+<!--          <label for="ordonnanceCategorie" class="block mb-2 text-xs font-medium text-gray-900">Categorie</label>-->
+<!--          <input [disabled]="!!fullConsultation.consultation.complete" [(ngModel)]="ordonnanceCategory" name="ordonnanceCategory"-->
+<!--                 id="ordonnanceCategorie" type="text" class="w-full p-2 border border-gray-300 rounded text-xs  disabled:bg-gray-100" placeholder="Categorie"/>-->
+<!--          <label for="ordonnanceDescription" class="block my-2 text-xs font-medium text-gray-900">Description</label>-->
+          <textarea (focusin)="callAI()" data-popover-target="popover-company-profile"  data-popover-placement="top" id="ordonnanceDescription" name="ordonnanceDescription" [(ngModel)]="ordonnanceDescription" class="w-full p-3 border border-gray-300 rounded mb-4 h-40" placeholder="détaillés ordonnance..."></textarea>
+          <button (click)="printOrdonnance()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full">Imprime Prescription</button>
+          <div data-popover id="popover-company-profile" role="tooltip" class="absolute z-10 invisible inline-block text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 w-[500px]">
+            <div class="px-3 py-2 bg-gray-100 border-b border-gray-200 rounded-t-lg dark:border-gray-600 dark:bg-gray-700">
+              <div class="flex justify-start">
+               <span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#049fc9" class="bi bi-robot" viewBox="0 0 16 16">
+              <path d="M6 12.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5M3 8.062C3 6.76 4.235 5.765 5.53 5.886a26.6 26.6 0 0 0 4.94 0C11.765 5.765 13 6.76 13 8.062v1.157a.93.93 0 0 1-.765.935c-.845.147-2.34.346-4.235.346s-3.39-.2-4.235-.346A.93.93 0 0 1 3 9.219zm4.542-.827a.25.25 0 0 0-.217.068l-.92.9a25 25 0 0 1-1.871-.183.25.25 0 0 0-.068.495c.55.076 1.232.149 2.02.193a.25.25 0 0 0 .189-.071l.754-.736.847 1.71a.25.25 0 0 0 .404.062l.932-.97a25 25 0 0 0 1.922-.188.25.25 0 0 0-.068-.495c-.538.074-1.207.145-1.98.189a.25.25 0 0 0-.166.076l-.754.785-.842-1.7a.25.25 0 0 0-.182-.135"/>
+              <path d="M8.5 1.866a1 1 0 1 0-1 0V3h-2A4.5 4.5 0 0 0 1 7.5V8a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1v1a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-1a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1v-.5A4.5 4.5 0 0 0 10.5 3h-2zM14 7.5V13a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7.5A3.5 3.5 0 0 1 5.5 4h5A3.5 3.5 0 0 1 14 7.5"/>
+            </svg>
+            </span>
+                <h3 class="ms-2.5 font-semibold text-gray-900">
+                  Recommandation d'ordonnances</h3>
+              </div>
+
+            </div>
+            <div class="p-3">
+
+              <div *ngIf="!recommendation" class="grid justify-items-center">
+                <img class="size-48 align-middle" src="assets/gifs/health-report.gif">
+              </div>
+
+              <div *ngIf="recommendation">
+                <ul class="w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                  <li *ngFor="let row of recommendation ;index as i" class="w-full ">
+                    <div class="flex items-center ps-3">
+
+                      <label class="w-full py-3 ms-2 text-xs font-normal text-gray-900 dark:text-gray-300">
+                        {{ row }}</label>
+                      <button  (click)="selecteRecommendation(i)"  id="vue-checkbox" value="" class="p-3 text-start text-blue-600 hover:underline   dark:bg-gray-600 ">
+                        ajouter
+                      </button>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+
+            </div>
+            <div data-popper-arrow></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="!fullConsultation.consultation.complete" class="mt-4 border p-2 border-gray-200 rounded">
+
+      <button (click)="showOrHideExamen()" class="font-medium  text-blue-600 w-full  flex justify-between ">
+        <p>
+          Demande d'examens
+        </p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
+        </svg>
+      </button>
+
+    </div>
+  </div>
+
+  <div class="bg-white shadow-sm rounded-lg p-4 flex-1">
+
+    <!-- Section: Consultation Details -->
+    <div *ngIf="!fullConsultation.consultation.complete" class="">
+      <h2 class="text-xl font-bold ml-2 mb-2">Consultations</h2>
+      <ul role="list" class="divide-y divide-gray-100 border border-gray-200 rounded p-2 mb-4">
+        <li *ngFor="let row of listConsultation" class="flex items-center justify-between gap-x-6 py-2">
+          <div class="min-w-0">
+            <div class="flex items-start gap-x-3">
+              <p class="text-l font-semibold leading-6 text-gray-900">{{row.motif}}</p>
+            </div>
+            <div class="mt-1 flex items-center gap-x-2 text-xs leading-5 text-gray-500">
+              <p class="whitespace-nowrap">Le <time>{{prepareDateTime(row.date)}}</time></p>
+            </div>
+          </div>
+          <div class="flex flex-none items-center gap-x-4">
+            <button data-drawer-target="drawer-detaille-consultation" data-drawer-show="drawer-detaille-consultation" data-drawer-placement="right" aria-controls="drawer-detaille-consultation" (click)="showDetailleConsultation(row)" class="hidden rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-blue-600 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:block">
+              Voir detaille<span class="sr-only">, {{row.motif}}</span></button>
+          </div>
+        </li>
+      </ul>
+
+
+
+    </div>
+    <!-- Section: Ordonnances -->
+    <div>
+      <h2 class="text-xl font-bold ml-2 mb-2">Ordonnances</h2>
+      <ul role="list" class="divide-y divide-gray-100 border border-gray-200 rounded p-2 mb-4">
+        <li *ngFor="let row of listOrdonnance" class="flex items-center justify-between gap-x-6 py-2">
+          <div class="min-w-0">
+            <div class="flex items-start gap-x-3">
+              <p class="text-l font-semibold leading-6 text-gray-900">{{row.categorie}}</p>
+            </div>
+            <div class="mt-1 flex items-center gap-x-2 text-xs leading-5 text-gray-500">
+              <p class="whitespace-nowrap">Le <time >{{prepareDateTime(row.date)}}</time></p>
+            </div>
+          </div>
+          <div class="flex flex-none items-center gap-x-4">
+            <button (click)="openOrdonnance(row)" class="hidden rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-blue-600  shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:block">
+              Ouvrire<span class="sr-only">, GraphQL API</span></button>
+          </div>
+        </li>
+      </ul>
+
+    </div>
+    <!--Section: Exams -->
+    <div>
+      <h2 class="text-xl font-bold ml-2 mb-2">Exams</h2>
+      <ul role="list" class="divide-y divide-gray-100 border border-gray-200 rounded p-2 my-2">
+        <li *ngFor="let row of listExamen" class="flex items-center justify-between gap-x-6 py-2">
+          <div class="min-w-0">
+            <div class="flex items-start gap-x-3">
+              <p class="text-l font-semibold leading-6 text-gray-900">{{ row.type }}</p>
+            </div>
+            <div class="mt-1 flex items-center gap-x-2 text-xs leading-5 text-gray-500">
+              <p class="whitespace-nowrap">Due on <time >{{prepareDateTime(row.date)}}</time></p>
+            </div>
+          </div>
+          <div class="flex flex-none items-center gap-x-4">
+            <button *ngIf="row.resultat" (click)="openDetailExamen(row,false)" class="hidden rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-green-500  shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:block">
+              Voir resultat<span class="sr-only">, {{ row.type }}</span></button>
+            <button *ngIf="!row.resultat" (click)="openDetailExamen(row,true)" class="hidden rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-red-500  shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:block">
+              Ajouter resultat<span class="sr-only">, {{ row.type }}</span></button>
+          </div>
+        </li>
+      </ul>
+
+    </div>
+  </div>
+
+</div>

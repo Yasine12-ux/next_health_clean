@@ -1,0 +1,50 @@
+<header class="flex flex-none items-center justify-between border-b border-gray-200 px-6 py-4">
+  <div>
+    <h1 class="text-base font-semibold leading-6 text-gray-900">
+      <time datetime="2022-01-22" class="capitalize ">{{appointmentManagementTableService.getSelectedDate().getValue()=="all"?"Tous": formatDateWithoutDay(appointmentManagementTableService.getSelectedDate().getValue())}}</time>
+    </h1>
+    <p *ngIf="appointmentManagementTableService.getSelectedDate().getValue()!='all'" class="mt-1 text-sm text-gray-500">{{formatDayName(selectedDate)}}</p>
+  </div>
+  <div class="flex items-center">
+    <div class="relative flex items-center rounded-md bg-white shadow-sm md:items-stretch">
+
+
+    </div>
+
+    <div  class="hidden md:ml-4 md:flex md:items-center">
+      <div>
+        <button [disabled]="appointmentManagementTableService.getSelectedDate().getValue()=='all'" *ngIf="!router.url.includes('/appointments/calendar')" (click)="appointmentManagementTableService.setSelectedDate('all');dateInput.value=''" type="button" class="disabled:text-gray-300 px-5 me-2 h-9  text-sm text-center font-bold text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-300 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+          Tous</button>
+      </div>
+
+
+      <div class="relative ring-0" >
+      </div>
+      <div  class="w-full">
+        <ul class="w-full inline-flex  text-sm ms-2">
+          <li class=" w-full"  >
+
+            <button [disabled]="appointmentManagementTableService.getSelectedDate().getValue()=='all'" (click)="adjustDate(-1)" class=" disabled:text-gray-300 w-full   py-4 text-sm flex items-center justify-center px-3 h-9 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-md hover:bg-gray-100 hover:text-gray-700">
+              <svg class="w-3.5 h-3.5 me-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5H1m0 0 4 4M1 5l4-4"/>
+              </svg>précédent</button>
+          </li>
+          <li>
+            <input #dateInput type="date" [(ngModel)]="selectedDate" (change)="loadRDVs()" class="flex border-gray-300 items-center gap-x-1.5  bg-white h-9 px-3 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-50"/>
+          </li>
+          <li class="w-full">
+            <button [disabled]="appointmentManagementTableService.getSelectedDate().getValue()=='all'" (click)="adjustDate(1)"  class="disabled:text-gray-300 py-4  w-full text-sm flex items-center justify-center px-3 h-9 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-md hover:bg-gray-100 hover:text-gray-700 ">
+              prochain
+              <svg class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+              </svg>
+            </button>
+          </li>
+        </ul>
+      </div>
+      <div class=" ml-6 h-6  bg-gray-300"></div>
+       <app-create-appointment *ngIf="router.url.includes('/rh/appointments/') || router.url.includes('/inf/appointments/')" [displayingDate]="selectedDate"></app-create-appointment>
+<!--        <app-create-block-out></app-create-block-out>-->
+    </div>
+  </div>
+</header>
