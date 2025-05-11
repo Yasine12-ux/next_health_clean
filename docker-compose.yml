@@ -1,7 +1,8 @@
 version: '3.8'
 services:
   discovery-server:
-    image: discovery-server
+    container_name: discovery-server
+    image: yassinex/nexthealth:discovery-server-latest
     build:
       context: .
       dockerfile: ./discovery/Dockerfile
@@ -12,7 +13,8 @@ services:
       - mynetwork
 
   gateway-app:
-    image: gateway-app
+    container_name: gateway-app
+    image: yassinex/nexthealth:gateway-app-latest
     build:
       context: .
       dockerfile: ./api-gateway-auth/Dockerfile
@@ -24,17 +26,23 @@ services:
       EUREKA_INSTANCE_HOSTNAME: gateway-app
       EUREKA_CLIENT_REGISTER_WITH_EUREKA: 'true'
       EUREKA_CLIENT_FETCH_REGISTRY: 'true'
+      # allowed ip for the front-end
+      APP_IP: http://localhost  # ⬇️⬇️ replace (localhost) by the server ip address
+
     ports:
       - "8080:8080"
     depends_on:
-      - discovery-server
-      - pfe-postgres
+      discovery-server:
+        condition: service_started
+      pfe-postgres:
+        condition: service_healthy
     entrypoint: ["java", "-jar", "/app.jar"]
     networks:
       - mynetwork
 
   medical-record:
-    image: medical-record
+    container_name: medical-record
+    image: yassinex/nexthealth:medical-record-latest
     build:
       context: .
       dockerfile: ./medical-record/Dockerfile
@@ -49,14 +57,17 @@ services:
     ports:
       - "8060:8060"
     depends_on:
-      - discovery-server
-      - pfe-postgres
+      discovery-server:
+        condition: service_started
+      pfe-postgres:
+        condition: service_healthy
     entrypoint: ["java", "-jar", "/mr.jar"]
     networks:
       - mynetwork
 
   appointments:
-    image: appointments
+    container_name: appointments
+    image: yassinex/nexthealth:appointments-latest
     build:
       context: .
       dockerfile: ./appointments/Dockerfile
@@ -71,13 +82,34 @@ services:
     ports:
       - "8070:8070"
     depends_on:
-      - discovery-server
-      - pfe-postgres
+      discovery-server:
+        condition: service_started
+      pfe-postgres:
+        condition: service_healthy
     entrypoint: ["java", "-jar", "/rdv.jar"]
     networks:
       - mynetwork
 
+
+  frontend:
+    container_name: frontend
+    image: yassinex/nexthealth:frontend-latest
+    build:
+      context: ./front
+      dockerfile: Dockerfile  # Adjust the path if needed
+    environment:
+      - BACKEND_URL=http://localhost:8080 # ⬇️⬇️ replace (localhost) by the server ip address (exemple http://localhost:8080 => http://51.1.1.1:8080 )
+
+    ports:
+      - "80:80"  # Expose on port 80
+    depends_on:
+      - gateway-app
+    networks:
+      - mynetwork
+
+
   pfe-postgres:
+    container_name: pfe-postgres
     image: postgres:latest
     environment:
       POSTGRES_DB: nexthealth_db
@@ -85,6 +117,11 @@ services:
       POSTGRES_PASSWORD: admin
     ports:
       - "5432:5432"
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "admin"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
     networks:
       - mynetwork
 
