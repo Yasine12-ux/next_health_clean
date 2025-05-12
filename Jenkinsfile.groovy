@@ -15,15 +15,23 @@ pipeline {
             }
         }
 
-        stage('Build Frontend Angular') {
+        stage('Build Frontend Angular') { 
             steps {
                 dir('front') {
                     sh 'npm install'
-                    sh 'ng build --configuration production'
+                    sh '''#!/bin/bash
+ng build --configuration production &
+pid=$!
+while kill -0 $pid 2>/dev/null; do
+  echo "Angular build en cours..."
+  sleep 30
+done
+wait $pid
+'''
                     sh "docker build -t $IMAGE_PREFIX:frontend-latest ."
-                }
-            }
         }
+    }
+}
 
         stage('Build Microservices Spring Boot') {
             steps {
