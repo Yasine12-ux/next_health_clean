@@ -18,6 +18,9 @@ pipeline {
         stage('Build Frontend Angular') { 
             steps {
                 dir('front') {
+                    cache(path: './node_modules', key: 'node-modules') {
+                        sh 'npm ci'
+                    }
                     sh 'npm install'
                     sh '''#!/bin/bash
 ng build --configuration production &
