@@ -5,6 +5,7 @@ pipeline {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-creds') // à configurer dans Jenkins
         DOCKERHUB_USER = 'yassinex'
         IMAGE_PREFIX = "${DOCKERHUB_USER}/nexthealth"
+        CACHE_DIR = "${env.WORKSPACE}/.npm_cache"
     }
 
     stages {
@@ -14,7 +15,22 @@ pipeline {
             }
         }
 
-        stage('Build Frontend Angular') { 
+        stage('Restaurer le cache Angular') {
+            steps {
+                dir('front') {
+                    script {
+                        if (!fileExists('node_modules') && fileExists("${CACHE_DIR}/node_modules.tar.gz")) {
+                            echo "🔁 Restauration de node_modules depuis le cache"
+                            sh "tar -xzf ${CACHE_DIR}/node_modules.tar.gz"
+                        } else {
+                            echo "🚫 Aucun cache trouvé ou déjà restauré"
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Build Frontend Angular') {
             steps {
                 dir('front') {
                     sh 'npm ci'
@@ -29,6 +45,12 @@ while kill -0 $pid 2>/dev/null; do
 done
 wait $pid
 '''
+                    }
+
+                    script {
+                        echo "💾 Sauvegarde du cache node_modules"
+                        sh "mkdir -p ${CACHE_DIR}"
+                        sh "tar -czf ${CACHE_DIR}/node_modules.tar.gz node_modules"
                     }
 
                     sh "docker build -t $IMAGE_PREFIX:frontend-latest ."
