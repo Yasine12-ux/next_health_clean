@@ -8,7 +8,6 @@ pipeline {
     }
 
     stages {
-
         stage('Cloner le projet') {
             steps {
                 git branch: 'main', url: 'https://github.com/Yasine12-ux/next_health_clean.git'
@@ -18,23 +17,24 @@ pipeline {
         stage('Build Frontend Angular') { 
             steps {
                 dir('front') {
-                    cache(path: './node_modules', key: 'node-modules') {
-                        sh 'npm ci'
-                    }
-                    sh 'npm install'
-                    sh '''#!/bin/bash
+                    sh 'npm ci'
+
+                    timeout(time: 10, unit: 'MINUTES') {
+                        sh '''#!/bin/bash
 ng build --configuration production &
 pid=$!
 while kill -0 $pid 2>/dev/null; do
-  echo "Angular build en cours..."
-  sleep 30
+  echo "⏳ Angular build en cours..."
+  sleep 20
 done
 wait $pid
 '''
+                    }
+
                     sh "docker build -t $IMAGE_PREFIX:frontend-latest ."
+                }
+            }
         }
-    }
-}
 
         stage('Build Microservices Spring Boot') {
             steps {
@@ -52,7 +52,7 @@ wait $pid
 
         stage('Pusher les images vers Docker Hub') {
             steps {
-                withDockerRegistry([credentialsId: 'dockerhub-creds' , url: 'https://index.docker.io/v1/']) {
+                withDockerRegistry([credentialsId: 'dockerhub-creds', url: 'https://index.docker.io/v1/']) {
                     script {
                         def images = ['frontend', 'api-gateway-auth', 'appointments', 'discovery', 'config-server', 'medical-record']
                         images.each { img ->
@@ -66,10 +66,19 @@ wait $pid
         stage('Déployer sur VPS') {
             steps {
                 sshagent (credentials: ['vps-ssh-key']) {
-                    sh 'scp docker-compose.yml ubuntu@IP_DU_VPS:/home/ubuntu/'
-                    sh 'ssh ubuntu@IP_DU_VPS "cd /home/ubuntu && docker compose pull && docker compose up -d"'
+                    sh 'scp docker-compose.yml ubuntu@135.125.191.162:/home/ubuntu/'
+                    sh 'ssh ubuntu@135.125.191.162 "cd /home/ubuntu && docker compose pull && docker compose up -d"'
                 }
             }
+        }
+    }
+
+    post {
+        success {
+            echo "✅ Déploiement réussi sur le VPS !"
+        }
+        failure {
+            echo "❌ Le pipeline a échoué. Consultez les logs pour plus d’infos."
         }
     }
 }
