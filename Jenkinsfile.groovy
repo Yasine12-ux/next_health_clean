@@ -82,6 +82,7 @@ wait $pid
                     def services = ['api-gateway-auth', 'appointments', 'discovery', 'config-server', 'medical-record']
                     services.each { svc ->
                         dir("${svc}") {
+                            sh 'chmod +x ./mvnw'
                             sh './mvnw clean package -DskipTests || mvn clean package -DskipTests'
                             sh "docker build -t $IMAGE_PREFIX:${svc}-latest ."
                         }
