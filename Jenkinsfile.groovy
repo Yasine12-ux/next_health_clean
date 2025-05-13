@@ -37,7 +37,7 @@ pipeline {
 
                     timeout(time: 10, unit: 'MINUTES') {
                         sh '''#!/bin/bash
-ng build --configuration production --progress=false --source-map=false --build-optimizer=false &
+ng build --configuration production --progress=false --source-map=false &
 pid=$!
 while kill -0 $pid 2>/dev/null; do
   echo "⏳ Angular build en cours..."
