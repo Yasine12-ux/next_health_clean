@@ -1,5 +1,9 @@
 pipeline {
     agent any
+    
+    options {
+    disableConcurrentBuilds()
+}
 
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-creds') // à configurer dans Jenkins
