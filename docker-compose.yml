@@ -14,7 +14,7 @@ services:
 
   gateway-app:
     container_name: gateway-app
-    image: yassinex/nexthealth:gateway-app-latest
+    image: yassinex/nexthealth:api-gateway-auth-latest
     build:
       context: .
       dockerfile: ./api-gateway-auth/Dockerfile
