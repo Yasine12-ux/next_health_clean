@@ -1,8 +1,8 @@
 version: '3.8'
 services:
   discovery-server:
-    container_name: discovery
-    image: yassinex/nexthealth:discovery-server-latest
+    container_name: discovery-server
+    image: yassinex/nexthealth:discovery-latest
     build:
       context: .
       dockerfile: ./discovery/Dockerfile
