@@ -35,7 +35,7 @@ pipeline {
                 dir('front') {
                     sh 'npm ci'
 
-                    timeout(time: 10, unit: 'MINUTES') {
+                    timeout(time: 20, unit: 'MINUTES') {
                         sh '''#!/bin/bash
 ng build --configuration production --progress=false --source-map=false &
 pid=$!
