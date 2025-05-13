@@ -1,9 +1,9 @@
 pipeline {
     agent any
-    
+
     options {
-    disableConcurrentBuilds()
-}
+        disableConcurrentBuilds()
+    }
 
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-creds') // à configurer dans Jenkins
@@ -58,6 +58,20 @@ wait $pid
                     }
 
                     sh "docker build -t $IMAGE_PREFIX:frontend-latest ."
+                }
+            }
+        }
+
+        stage('Préparer dépendances Maven (go-offline)') {
+            steps {
+                script {
+                    def services = ['api-gateway-auth', 'appointments', 'discovery', 'config-server', 'medical-record']
+                    services.each { svc ->
+                        dir("${svc}") {
+                            echo "🔁 Pré-téléchargement des dépendances Maven pour ${svc}"
+                            sh './mvnw dependency:go-offline || mvn dependency:go-offline'
+                        }
+                    }
                 }
             }
         }
