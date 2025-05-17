@@ -1,4 +1,5 @@
 version: '3.8'
+
 services:
   discovery-server:
     container_name: discovery-server
@@ -11,6 +12,11 @@ services:
     entrypoint: ["java", "-jar", "/eureka-server.jar"]
     networks:
       - mynetwork
+    deploy:
+      resources:
+        limits:
+          memory: 200m          # 200 MiB
+          cpus: '0.1'           # 10 % d’un cœur
 
   gateway-app:
     container_name: gateway-app
@@ -26,9 +32,7 @@ services:
       EUREKA_INSTANCE_HOSTNAME: gateway-app
       EUREKA_CLIENT_REGISTER_WITH_EUREKA: 'true'
       EUREKA_CLIENT_FETCH_REGISTRY: 'true'
-      # allowed ip for the front-end
-      APP_IP: http://localhost  # ⬇️⬇️ replace (localhost) by the server ip address
-
+      APP_IP: http://localhost   # ⬅️ remplacez localhost par l’IP du serveur
     ports:
       - "8080:8080"
     depends_on:
@@ -39,6 +43,11 @@ services:
     entrypoint: ["java", "-jar", "/app.jar"]
     networks:
       - mynetwork
+    deploy:
+      resources:
+        limits:
+          memory: 200m
+          cpus: '0.1'
 
   medical-record:
     container_name: medical-record
@@ -64,6 +73,11 @@ services:
     entrypoint: ["java", "-jar", "/mr.jar"]
     networks:
       - mynetwork
+    deploy:
+      resources:
+        limits:
+          memory: 200m
+          cpus: '0.1'
 
   appointments:
     container_name: appointments
@@ -89,24 +103,31 @@ services:
     entrypoint: ["java", "-jar", "/rdv.jar"]
     networks:
       - mynetwork
-
+    deploy:
+      resources:
+        limits:
+          memory: 200m
+          cpus: '0.1'
 
   frontend:
     container_name: frontend
     image: yassinex/nexthealth:frontend-latest
     build:
       context: ./front
-      dockerfile: Dockerfile  # Adjust the path if needed
+      dockerfile: Dockerfile
     environment:
-      - BACKEND_URL=http://localhost:8080 # ⬇️⬇️ replace (localhost) by the server ip address (exemple http://localhost:8080 => http://51.1.1.1:8080 )
-
+      - BACKEND_URL=http://localhost:8080   # ⬅️ remplacez localhost par l’IP du serveur
     ports:
-      - "80:80"  # Expose on port 80
+      - "80:80"
     depends_on:
       - gateway-app
     networks:
       - mynetwork
-
+    deploy:
+      resources:
+        limits:
+          memory: 200m
+          cpus: '0.1'
 
   pfe-postgres:
     container_name: pfe-postgres
@@ -124,6 +145,11 @@ services:
       retries: 10
     networks:
       - mynetwork
+    deploy:
+      resources:
+        limits:
+          memory: 200m      # Vous pouvez monter à 256 m ou 512 m si nécessaire
+          cpus: '0.1'
 
 networks:
   mynetwork:
