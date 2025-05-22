@@ -110,7 +110,7 @@ wait $pid
                     sh 'mkdir -p ~/.ssh'
                     sh 'ssh-keyscan -H 135.125.191.162 >> ~/.ssh/known_hosts'
                     sh 'scp docker-compose.yml ubuntu@135.125.191.162:/home/ubuntu/'
-                    sh 'ssh ubuntu@135.125.191.162 "cd /home/ubuntu && docker compose pull && docker compose --compatibility up -d"'
+                    sh 'ssh ubuntu@135.125.191.162 "cd /home/ubuntu && docker compose pull && docker compose up -d"'
                 }
             }
         }
